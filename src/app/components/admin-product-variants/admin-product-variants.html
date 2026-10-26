@@ -1,0 +1,429 @@
+
+@if (selectedImageVariant(); as selectedVariant) {
+
+  <!-- ADMINISTRADOR DE FOTOGRAFÍAS -->
+
+  <app-admin-product-images
+    [productId]="productId()"
+    [variantId]="selectedVariant.id"
+    [productName]="productName()"
+    [variantName]="variantLabel(selectedVariant)"
+    (closed)="closeImages()">
+  </app-admin-product-images>
+
+} @else {
+
+  <section class="variants-panel">
+
+    <!-- ENCABEZADO -->
+
+    <div class="variants-header">
+
+      <div>
+        <span class="eyebrow">
+          ALLÉA · INVENTARIO
+        </span>
+
+        <h3>
+          Variantes de {{ productName() }}
+        </h3>
+
+        <p>
+          Administra colores, tallas, inventario
+          y fotografías de este producto.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closed.emit()">
+        ✕ Cerrar
+      </button>
+
+    </div>
+
+    <div class="variants-layout">
+
+      <!-- FORMULARIO DE VARIANTES -->
+
+      <div class="form-panel">
+
+        <h4>
+          {{
+            editingId()
+              ? 'Editar variante'
+              : 'Nueva variante'
+          }}
+        </h4>
+
+        <form
+          #variantForm="ngForm"
+          (ngSubmit)="saveVariant()"
+        >
+
+          @if (!isSupplement()) {
+
+            <!-- COLOR -->
+
+            <div class="field">
+
+              <label for="colorName">
+                Color *
+              </label>
+
+              <input
+                id="colorName"
+                name="colorName"
+                type="text"
+                [(ngModel)]="form.color_name"
+                placeholder="Ej. Negro, Café, Rosado"
+                required
+              />
+
+            </div>
+
+            <!-- COLOR VISUAL -->
+
+            <div class="field">
+
+              <label for="colorHex">
+                Color visual
+              </label>
+
+              <input
+                id="colorHex"
+                name="colorHex"
+                type="color"
+                [(ngModel)]="form.color_hex"
+              />
+
+            </div>
+
+            <!-- LISTA DE TALLAS -->
+
+            <div class="field">
+
+              <label for="size">
+                Talla *
+              </label>
+
+              <select
+                id="size"
+                name="size"
+                [(ngModel)]="form.size"
+                required
+              >
+
+                <option value="" disabled>
+                  Selecciona una talla
+                </option>
+
+                <option value="Única">
+                  Talla única
+                </option>
+
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+                <option value="XXXL">XXXL</option>
+
+              </select>
+
+            </div>
+
+          } @else {
+
+            <!-- SABOR -->
+
+            <div class="field">
+
+              <label for="flavor">
+                Sabor *
+              </label>
+
+              <input
+                id="flavor"
+                name="flavor"
+                type="text"
+                [(ngModel)]="form.flavor"
+                placeholder="Ej. Vainilla"
+                required
+              />
+
+            </div>
+
+            <!-- PRESENTACIÓN -->
+
+            <div class="field">
+
+              <label for="presentation">
+                Presentación
+              </label>
+
+              <input
+                id="presentation"
+                name="presentation"
+                type="text"
+                [(ngModel)]="form.presentation"
+                placeholder="Ej. 1 kg"
+              />
+
+            </div>
+
+          }
+
+          <!-- SKU -->
+
+          <div class="field">
+
+            <label for="sku">
+              Referencia / SKU (opcional)
+            </label>
+
+            <input
+              id="sku"
+              name="sku"
+              type="text"
+              [(ngModel)]="form.sku"
+              placeholder="Ej. ELARA-NEG-U"
+            />
+
+          </div>
+
+          <!-- INVENTARIO -->
+
+          <div class="field">
+
+            <label for="stock">
+              Unidades disponibles
+            </label>
+
+            <input
+              id="stock"
+              name="stock"
+              type="number"
+              min="0"
+              step="1"
+              [(ngModel)]="form.stock"
+              required
+            />
+
+          </div>
+
+          <!-- ESTADO -->
+
+          <label class="active-field">
+
+            <input
+              type="checkbox"
+              name="active"
+              [(ngModel)]="form.is_active"
+            />
+
+            Variante activa
+
+          </label>
+
+          <!-- BOTONES -->
+
+          <div class="form-actions">
+
+            @if (editingId()) {
+
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="cancelEdit()">
+                Cancelar edición
+              </button>
+
+            }
+
+            <button
+              type="submit"
+              class="primary-button"
+              [disabled]="saving() || variantForm.invalid"
+            >
+
+              {{
+                saving()
+                  ? 'Guardando...'
+                  : editingId()
+                    ? 'Guardar cambios'
+                    : '+ Agregar variante'
+              }}
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- LISTADO DE VARIANTES -->
+
+      <div class="list-panel">
+
+        <h4>
+          Variantes registradas
+          <span>{{ variants().length }}</span>
+        </h4>
+
+        @if (loading()) {
+
+          <p class="muted">
+            Cargando variantes...
+          </p>
+
+        } @else {
+
+          @for (
+            variant of variants();
+            track variant.id
+          ) {
+
+            <div class="variant-card">
+
+              <div class="variant-info">
+
+                <!-- CÍRCULO DE COLOR -->
+
+                @if (
+                  variant.color_hex &&
+                  !isSupplement()
+                ) {
+
+                  <span
+                    class="color-preview"
+                    [style.background]="variant.color_hex">
+                  </span>
+
+                }
+
+                <!-- DATOS DE LA VARIANTE -->
+
+                <div>
+
+                  <strong>
+                    {{ variantLabel(variant) }}
+                  </strong>
+
+                  <p>
+                    SKU:
+                    {{
+                      variant.sku ||
+                      'Sin referencia'
+                    }}
+                  </p>
+
+                  <p>
+                    Stock:
+                    {{ variant.stock }} unidades
+                  </p>
+
+                  <span
+                    class="variant-status"
+                    [class.inactive]="!variant.is_active"
+                  >
+
+                    {{
+                      variant.is_active
+                        ? 'Activa'
+                        : 'Inactiva'
+                    }}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+              <!-- ACCIONES -->
+
+              <div class="variant-actions">
+
+                <button
+                  type="button"
+                  class="photos-button"
+                  (click)="openImages(variant)">
+                  ◫ Fotografías
+                </button>
+
+                <button
+                  type="button"
+                  class="edit-button"
+                  (click)="startEdit(variant)">
+                  Editar
+                </button>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  [disabled]="deletingId() !== null"
+                  (click)="deleteVariant(variant)">
+
+                  {{
+                    deletingId() === variant.id
+                      ? 'Eliminando...'
+                      : 'Eliminar'
+                  }}
+
+                </button>
+
+              </div>
+
+            </div>
+
+          } @empty {
+
+            <div class="empty-state">
+
+              <p>
+                Aún no hay variantes registradas.
+              </p>
+
+              <span>
+                Agrega el primer color, talla
+                o presentación de este producto.
+              </span>
+
+            </div>
+
+          }
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- MENSAJES -->
+
+    @if (errorMessage()) {
+
+      <p
+        class="error-message"
+        role="alert">
+        {{ errorMessage() }}
+      </p>
+
+    }
+
+    @if (successMessage()) {
+
+      <p
+        class="success-message"
+        role="status">
+        {{ successMessage() }}
+      </p>
+
+    }
+
+  </section>
+
+}

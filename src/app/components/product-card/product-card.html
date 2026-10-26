@@ -1,0 +1,250 @@
+
+<article class="product-card">
+
+  <!-- GALERÍA PRINCIPAL -->
+
+  <div class="product-image">
+
+    @if (currentImage(); as image) {
+
+      <a
+        [routerLink]="['/producto', product().slug]"
+        class="product-image-link">
+
+        <img
+          [src]="image.url"
+          [alt]="image.alt"
+          loading="lazy">
+
+      </a>
+
+    } @else {
+
+      <div class="no-image">
+        Sin imagen
+      </div>
+
+    }
+
+    <!-- ETIQUETA DE AGOTADO -->
+
+    @if (isSoldOut()) {
+
+      <span class="sold-out-badge">
+        AGOTADO
+      </span>
+
+    }
+
+    <!-- FLECHAS DE GALERÍA -->
+
+    @if (images().length > 1) {
+
+      <button
+        type="button"
+        class="gallery-arrow previous"
+        aria-label="Fotografía anterior"
+        (click)="previousImage()">
+        ‹
+      </button>
+
+      <button
+        type="button"
+        class="gallery-arrow next"
+        aria-label="Fotografía siguiente"
+        (click)="nextImage()">
+        ›
+      </button>
+
+      <div class="gallery-counter">
+        {{ selectedImageIndex() + 1 }}
+        /
+        {{ images().length }}
+      </div>
+
+    }
+
+  </div>
+
+  <!-- MINIATURAS -->
+
+  @if (images().length > 1) {
+
+    <div class="gallery-thumbnails">
+
+      @for (
+        image of images();
+        track image.id;
+        let i = $index
+      ) {
+
+        <button
+          type="button"
+          [class.active]="selectedImageIndex() === i"
+          [attr.aria-label]="'Ver fotografía ' + (i + 1)"
+          (click)="selectImage(i)">
+
+          <img
+            [src]="image.url"
+            [alt]="image.alt"
+            loading="lazy">
+
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+  <!-- INFORMACIÓN -->
+
+  <div class="product-info">
+
+    <h3>
+
+      <a
+        [routerLink]="['/producto', product().slug]"
+        class="product-link">
+
+        {{ product().name }}
+
+      </a>
+
+    </h3>
+
+    <p>
+      {{ product().description }}
+    </p>
+
+    <!-- VARIANTES -->
+
+    <div class="variant-options">
+
+      @for (
+        item of availableVariants();
+        track item.id
+      ) {
+
+        <button
+          type="button"
+          class="variant-option"
+          [class.active]="selectedVariant()?.id === item.id"
+          [class.sold-out-option]="!item.available"
+          [attr.aria-label]="
+            (item.color || item.flavor || item.presentation || item.size || 'Opción')
+            + (!item.available ? ' - Agotado' : '')
+          "
+          [attr.title]="
+            (item.color || item.flavor || item.presentation || item.size || 'Opción')
+            + (!item.available ? ' - Agotado' : '')
+          "
+          (click)="selectVariant(item)">
+
+          @if (item.color) {
+
+            <span
+              class="color-dot"
+              [style.background]="item.colorHex">
+            </span>
+
+          } @else {
+
+            <span class="variant-label">
+              {{
+                item.flavor ||
+                item.presentation ||
+                item.size
+              }}
+            </span>
+
+          }
+
+        </button>
+
+      }
+
+    </div>
+
+    <!-- DETALLES DE LA VARIANTE -->
+
+    @if (selectedVariant(); as selected) {
+
+      @if (selected.color) {
+
+        <span class="size">
+          Color: {{ selected.color }}
+        </span>
+
+      }
+
+      @if (selected.size) {
+
+        <span class="size">
+          Talla: {{ selected.size }}
+        </span>
+
+      }
+
+      @if (selected.flavor) {
+
+        <span class="size">
+          Sabor: {{ selected.flavor }}
+        </span>
+
+      }
+
+      @if (selected.presentation) {
+
+        <span class="size">
+          Presentación: {{ selected.presentation }}
+        </span>
+
+      }
+
+      @if (!selected.available) {
+
+        <span class="stock-message">
+          Producto agotado
+        </span>
+
+      }
+
+    }
+
+    <!-- PRECIO -->
+
+    <strong>
+      {{
+        product().price |
+        currency:'COP':'symbol-narrow':'1.0-0'
+      }}
+    </strong>
+
+    <!-- CARRITO -->
+
+    <button
+      type="button"
+      class="add-cart"
+      [disabled]="!canAddToCart()"
+      (click)="addToCart()">
+
+      @if (isSoldOut()) {
+
+        AGOTADO
+
+      } @else if (remainingStock() === 0) {
+
+        STOCK MÁXIMO EN CARRITO
+
+      } @else {
+
+        AÑADIR AL CARRITO
+
+      }
+
+    </button>
+
+  </div>
+
+</article>

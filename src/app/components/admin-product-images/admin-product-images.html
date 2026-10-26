@@ -1,0 +1,136 @@
+
+<section class="images-panel">
+
+  <header class="images-header">
+    <div>
+      <span class="eyebrow">ALLÉA · FOTOGRAFÍAS</span>
+      <h3>{{ productName() }}</h3>
+      <p>Variante: {{ variantName() }}</p>
+    </div>
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="closed.emit()">
+      ← Volver a variantes
+    </button>
+  </header>
+
+  <div class="upload-area">
+    <h4>Agregar fotografías</h4>
+
+    <p>
+      Selecciona fotografías de frente, espalda
+      o detalles. JPG, PNG o WEBP, máximo 5 MB
+      por archivo.
+    </p>
+
+    <input
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      multiple
+      (change)="onFilesSelected($event)"
+    />
+
+    <div class="upload-actions">
+      <span>
+        {{ selectedFiles.length }} archivo(s) seleccionado(s)
+      </span>
+
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="uploading() || !selectedFiles.length"
+        (click)="uploadImages()">
+        {{ uploading() ? 'Subiendo...' : 'Subir fotografías' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="gallery-heading">
+    <h4>Galería de la variante</h4>
+    <span>{{ images().length }} fotografías</span>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Cargando fotografías...</p>
+  } @else {
+
+    <div class="images-grid">
+
+      @for (image of images(); track image.id; let i = $index) {
+
+        <article class="image-card">
+
+          <div class="image-preview">
+            <img
+              [src]="image.image_url"
+              [alt]="image.alt_text || productName()"
+            />
+
+            @if (image.is_primary) {
+              <span class="primary-label">
+                Principal
+              </span>
+            }
+          </div>
+
+          <div class="image-actions">
+
+            <button
+              type="button"
+              [disabled]="!!busyId() || image.is_primary"
+              (click)="makePrimary(image)">
+              {{ image.is_primary ? 'Principal ✓' : 'Hacer principal' }}
+            </button>
+
+            <div class="order-actions">
+              <button
+                type="button"
+                [disabled]="!!busyId() || i === 0"
+                (click)="moveImage(image, -1)">
+                ↑
+              </button>
+
+              <button
+                type="button"
+                [disabled]="!!busyId() || i === images().length - 1"
+                (click)="moveImage(image, 1)">
+                ↓
+              </button>
+
+              <button
+                type="button"
+                class="delete-button"
+                [disabled]="!!busyId()"
+                (click)="deleteImage(image)">
+                Eliminar
+              </button>
+            </div>
+
+          </div>
+
+        </article>
+
+      } @empty {
+        <p class="empty-gallery">
+          Esta variante todavía no tiene fotografías.
+        </p>
+      }
+
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-message" role="alert">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  @if (successMessage()) {
+    <p class="success-message" role="status">
+      {{ successMessage() }}
+    </p>
+  }
+
+</section>

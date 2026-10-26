@@ -1,0 +1,236 @@
+
+<section class="slider-admin">
+
+  <div class="slider-heading">
+    <div>
+      <h3>Slider principal de ALLÉA</h3>
+      <p>{{ activeCount() }} de 5 banners activos</p>
+    </div>
+
+    @if (!showForm()) {
+      <button
+        type="button"
+        class="gold-btn"
+        (click)="newSlide()">
+        + Agregar banner
+      </button>
+    }
+  </div>
+
+  @if (error()) {
+    <p class="slider-error" role="alert">
+      {{ error() }}
+    </p>
+  }
+
+  @if (success()) {
+    <p class="slider-success" role="status">
+      {{ success() }}
+    </p>
+  }
+
+  @if (showForm()) {
+
+    <form class="slider-form" (ngSubmit)="save()">
+
+      <h4>
+        {{ editingId() ? 'Editar banner' : 'Nuevo banner' }}
+      </h4>
+
+      <label for="slide-title">Título principal *</label>
+      <input
+        id="slide-title"
+        name="title"
+        required
+        [ngModel]="title()"
+        (ngModelChange)="title.set($event)">
+
+      <label for="slide-subtitle">Subtítulo</label>
+      <textarea
+        id="slide-subtitle"
+        name="subtitle"
+        rows="2"
+        [ngModel]="subtitle()"
+        (ngModelChange)="subtitle.set($event)">
+      </textarea>
+
+      <label for="slide-button-text">Texto del botón</label>
+      <input
+        id="slide-button-text"
+        name="buttonText"
+        [ngModel]="buttonText()"
+        (ngModelChange)="buttonText.set($event)">
+
+      <label for="slide-button-link">Enlace del botón</label>
+      <input
+        id="slide-button-link"
+        name="buttonLink"
+        [ngModel]="buttonLink()"
+        (ngModelChange)="buttonLink.set($event)">
+
+      <label for="desktop-image">Imagen para computador *</label>
+      <input
+        id="desktop-image"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="onFileSelected($event, 'desktop')">
+
+      @if (desktopPreview() || desktopUrl()) {
+        <div class="banner-preview desktop-preview">
+          <img
+            [src]="desktopPreview() || desktopUrl()"
+            alt="Vista previa para computador">
+          <div class="preview-overlay">
+            <h3>{{ title() || 'TÍTULO DEL BANNER' }}</h3>
+            <p>{{ subtitle() || 'Subtítulo del banner' }}</p>
+            @if (buttonText()) {
+              <span>{{ buttonText() }}</span>
+            }
+          </div>
+        </div>
+      }
+
+      <label for="mobile-image">Imagen para celular</label>
+      <input
+        id="mobile-image"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="onFileSelected($event, 'mobile')">
+
+      @if (mobilePreview() || mobileUrl() ||
+           desktopPreview() || desktopUrl()) {
+        <div class="banner-preview mobile-preview">
+          <img
+            [src]="mobilePreview() || mobileUrl() ||
+                   desktopPreview() || desktopUrl()"
+            alt="Vista previa para celular">
+          <div class="preview-overlay">
+            <h3>{{ title() || 'TÍTULO DEL BANNER' }}</h3>
+            <p>{{ subtitle() || 'Subtítulo del banner' }}</p>
+            @if (buttonText()) {
+              <span>{{ buttonText() }}</span>
+            }
+          </div>
+        </div>
+      }
+
+      <label for="slide-position">Orden de aparición</label>
+      <input
+        id="slide-position"
+        type="number"
+        name="position"
+        min="1"
+        [ngModel]="position()"
+        (ngModelChange)="position.set($event)">
+
+      <label class="active-check">
+        <input
+          type="checkbox"
+          name="active"
+          [ngModel]="active()"
+          (ngModelChange)="active.set($event)">
+        Banner activo
+      </label>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="outline-btn"
+          (click)="cancel()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="gold-btn"
+          [disabled]="saving()">
+          {{ saving() ? 'Guardando...' : 'Guardar banner' }}
+        </button>
+      </div>
+
+    </form>
+
+  } @else {
+
+    @if (loading()) {
+      <p>Cargando banners...</p>
+    } @else {
+
+      <div class="slides-grid">
+
+        @for (slide of sortedSlides(); track slide.id; let i = $index) {
+
+          <article class="slide-card">
+
+            <img
+              [src]="slide.imageDesktop"
+              [alt]="slide.title">
+
+            <div class="slide-details">
+              <h4>{{ slide.title }}</h4>
+              <p>{{ slide.subtitle }}</p>
+              <p>Orden: {{ slide.position }}</p>
+
+              <span [class.inactive]="!slide.active">
+                {{ slide.active ? 'Activo' : 'Inactivo' }}
+              </span>
+
+              <div class="slide-order">
+                <button
+                  type="button"
+                  class="outline-btn"
+                  [disabled]="processing() || i === 0"
+                  (click)="moveSlide(slide, -1)">
+                  ↑ Subir
+                </button>
+
+                <button
+                  type="button"
+                  class="outline-btn"
+                  [disabled]="processing() ||
+                    i === sortedSlides().length - 1"
+                  (click)="moveSlide(slide, 1)">
+                  ↓ Bajar
+                </button>
+              </div>
+
+              <div class="slide-actions">
+                <button
+                  type="button"
+                  class="outline-btn"
+                  [disabled]="processing()"
+                  (click)="toggleActive(slide)">
+                  {{ slide.active ? 'Desactivar' : 'Activar' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="outline-btn"
+                  [disabled]="processing()"
+                  (click)="editSlide(slide)">
+                  Editar
+                </button>
+
+                <button
+                  type="button"
+                  class="delete-btn"
+                  [disabled]="processing()"
+                  (click)="remove(slide)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+        } @empty {
+          <p>Todavía no hay banners registrados.</p>
+        }
+
+      </div>
+
+    }
+
+  }
+
+</section>

@@ -1,0 +1,145 @@
+
+.settings-panel {
+  background: #242321;
+  border: 1px solid #3b3732;
+  border-radius: 10px;
+  padding: 30px;
+  color: #f5f2ed;
+}
+
+.settings-heading {
+  margin-bottom: 30px;
+
+  .eyebrow {
+    color: #b99867;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  h3 {
+    margin: 12px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 750px;
+}
+
+.settings-group {
+  padding: 24px;
+  background: #2c2a28;
+  border: 1px solid #413b34;
+  border-radius: 8px;
+
+  h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    color: #f5f2ed;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 13px;
+    color: #f5f2ed;
+    font-weight: 500;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    background: #1c1c1c;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: #b99867;
+    }
+  }
+
+  small {
+    display: block;
+    margin-top: 10px;
+    color: #aaa;
+    font-size: 11px;
+  }
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-settings-btn {
+  background: #b99867;
+  color: #171717;
+  border: 1px solid #b99867;
+  border-radius: 5px;
+  padding: 14px 24px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #cba977;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.settings-error {
+  color: #ffaaaa;
+  font-size: 13px;
+}
+
+.settings-success {
+  color: #d6c09c;
+  font-size: 13px;
+}
+
+.loading-message {
+  color: #aaa;
+}
+
+@media (max-width: 600px) {
+  .settings-panel {
+    padding: 18px;
+  }
+
+  .settings-group {
+    padding: 16px;
+  }
+
+  .settings-actions {
+    justify-content: stretch;
+  }
+
+  .save-settings-btn {
+    width: 100%;
+  }
+}

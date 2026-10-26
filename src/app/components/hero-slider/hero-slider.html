@@ -1,0 +1,69 @@
+
+<section class="hero-slider">
+
+  @if (currentSlide(); as slide) {
+
+    <div class="slide">
+
+      <picture class="slide-image">
+        <source
+          media="(max-width: 768px)"
+          [srcset]="slide.imageMobile">
+
+        <img
+          [src]="slide.imageDesktop"
+          [alt]="slide.title">
+      </picture>
+
+      <div class="overlay"></div>
+
+      <div class="slide-content">
+        <span class="eyebrow">ALLÉA · MOVE WITH YOU</span>
+
+        <h1>{{ slide.title }}</h1>
+
+        <p>{{ slide.subtitle }}</p>
+
+        <a [href]="slide.buttonLink" class="hero-btn">
+          {{ slide.buttonText }}
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+
+    @if (activeSlides().length > 1) {
+
+      <button
+        type="button"
+        class="slider-arrow prev"
+        aria-label="Slide anterior"
+        (click)="previousSlide()">
+        &#10094;
+      </button>
+
+      <button
+        type="button"
+        class="slider-arrow next"
+        aria-label="Siguiente slide"
+        (click)="nextSlide()">
+        &#10095;
+      </button>
+
+      <div class="slider-dots">
+        @for (item of activeSlides(); track item.id; let i = $index) {
+          <button
+            type="button"
+            [class.active]="currentIndex() === i"
+            [attr.aria-label]="'Ir al slide ' + (i + 1)"
+            [attr.aria-current]="currentIndex() === i ? 'true' : null"
+            (click)="goToSlide(i)">
+          </button>
+        }
+      </div>
+
+    }
+
+  }
+
+</section>

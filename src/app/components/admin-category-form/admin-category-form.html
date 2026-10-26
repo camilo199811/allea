@@ -1,0 +1,117 @@
+
+<section class="category-form-card">
+
+  <div class="category-form-heading">
+    <div>
+      <h3>
+        {{ category() ? 'Editar categoría' : 'Nueva categoría' }}
+      </h3>
+      <p>Configura cómo se mostrará en ALLÉA.</p>
+    </div>
+
+    <button type="button" (click)="cancel()">
+      ✕ Cerrar
+    </button>
+  </div>
+
+  <form (ngSubmit)="save()">
+
+    <label for="category-name">
+      Nombre de la categoría
+    </label>
+
+    <input
+      id="category-name"
+      name="categoryName"
+      type="text"
+      required
+      [ngModel]="name()"
+      (ngModelChange)="onNameChange($event)"
+      placeholder="Ej. Enterizos">
+
+    <label for="category-slug">
+      Identificador (slug)
+    </label>
+
+    <input
+      id="category-slug"
+      name="categorySlug"
+      type="text"
+      required
+      [ngModel]="slug()"
+      (ngModelChange)="slug.set($event)"
+      placeholder="Ej. enterizos">
+
+    <label for="category-position">
+      Orden de visualización
+    </label>
+
+    <input
+      id="category-position"
+      name="categoryPosition"
+      type="number"
+      min="0"
+      [ngModel]="position()"
+      (ngModelChange)="position.set($event)">
+
+    <label for="category-image">
+      Imagen de la categoría
+    </label>
+
+    <input
+      id="category-image"
+      type="file"
+      accept="image/*"
+      (change)="onFileSelected($event)">
+
+    @if (imageUrl() && !selectedFile()) {
+      <img
+        class="category-preview"
+        [src]="imageUrl()"
+        [alt]="name()">
+    }
+
+    @if (selectedFile()) {
+      <p class="selected-file">
+        Imagen seleccionada: {{ selectedFile()?.name }}
+      </p>
+    }
+
+    <label class="category-active">
+      <input
+        type="checkbox"
+        name="categoryActive"
+        [ngModel]="active()"
+        (ngModelChange)="active.set($event)">
+      Categoría activa
+    </label>
+
+    @if (error()) {
+      <p class="category-error" role="alert">
+        {{ error() }}
+      </p>
+    }
+
+    <div class="category-form-actions">
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancel()">
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="save-btn"
+        [disabled]="saving()">
+        {{
+          saving()
+            ? 'Guardando...'
+            : 'Guardar categoría'
+        }}
+      </button>
+    </div>
+
+  </form>
+
+</section>

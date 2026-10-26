@@ -1,0 +1,32 @@
+
+<section class="categories-section" id="categorias">
+
+  <!-- CATEGORÍAS -->
+  <div class="categories-list">
+
+    @for (category of categories(); track category.id) {
+
+      <button
+        type="button"
+        class="category-item"
+        [class.active]="selectedCategory() === category.slug"
+        (click)="selectCategory(category.slug)">
+
+        <div class="category-image">
+          <img
+            [src]="category.imageUrl"
+            [alt]="category.name"
+            loading="lazy">
+        </div>
+
+        <span class="category-name">
+          {{ category.name }}
+        </span>
+
+      </button>
+
+    }
+
+  </div>
+
+</section>

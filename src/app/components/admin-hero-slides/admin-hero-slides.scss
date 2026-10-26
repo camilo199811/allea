@@ -1,0 +1,304 @@
+
+.slider-admin {
+  padding: 26px;
+  background: #242321;
+  border: 1px solid #3b3732;
+  border-radius: 10px;
+  color: #f5f2ed;
+}
+
+.slider-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    color: #aaa;
+    font-size: 12px;
+  }
+}
+
+.gold-btn,
+.outline-btn,
+.delete-btn {
+  padding: 11px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.gold-btn {
+  background: #b99867;
+  color: #171717;
+  border: 1px solid #b99867;
+}
+
+.gold-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.outline-btn {
+  background: transparent;
+  color: #e5cba5;
+  border: 1px solid #826b4c;
+}
+
+.delete-btn {
+  background: transparent;
+  color: #e9a1a1;
+  border: 1px solid #824848;
+}
+
+.slider-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 720px;
+
+  h4 {
+    margin: 0 0 12px;
+  }
+
+  label {
+    color: #f5f2ed;
+    font-size: 13px;
+  }
+
+  input:not([type='checkbox']),
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    background: #303030;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font: inherit;
+  }
+
+  input[type='file'] {
+    max-width: 100%;
+  }
+}
+
+.image-preview {
+  width: 100%;
+  max-width: 360px;
+  max-height: 190px;
+  object-fit: cover;
+  border-radius: 6px;
+
+  &.mobile {
+    max-width: 150px;
+    max-height: 230px;
+  }
+}
+
+.active-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-actions,
+.slide-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.slides-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.slide-card {
+  overflow: hidden;
+  border: 1px solid #403a33;
+  border-radius: 8px;
+  background: #302d2a;
+
+  > img {
+    display: block;
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+  }
+}
+
+.slide-details {
+  padding: 16px;
+
+  h4 {
+    margin: 0 0 8px;
+  }
+
+  p {
+    color: #bbb;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  span {
+    color: #b99867;
+    font-size: 12px;
+  }
+
+  span.inactive {
+    color: #aaa;
+  }
+}
+
+.slider-error {
+  color: #ffaaaa;
+}
+
+.slider-success {
+  color: #d6c09c;
+}
+
+@media (max-width: 700px) {
+  .slider-admin {
+    padding: 16px;
+  }
+
+  .slider-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .slides-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================
+   ALLÉA - VISTAS PREVIAS DEL SLIDER
+===================================== */
+
+.banner-preview {
+  position: relative;
+  overflow: hidden;
+  background: #171717;
+  border: 1px solid #514636;
+  border-radius: 8px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.1)
+    );
+    pointer-events: none;
+  }
+}
+
+.desktop-preview {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+}
+
+.mobile-preview {
+  width: min(100%, 260px);
+  aspect-ratio: 9 / 16;
+
+  &::after {
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.05)
+    );
+  }
+}
+
+.preview-overlay {
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+
+  h3 {
+    font-size: clamp(15px, 2vw, 28px);
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+
+  p {
+    font-size: clamp(10px, 1.2vw, 14px);
+    line-height: 1.5;
+  }
+
+  span {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #b99867;
+    color: #111;
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+.mobile-preview .preview-overlay {
+  top: auto;
+  bottom: 10%;
+  transform: none;
+
+  h3 {
+    font-size: 19px;
+  }
+
+  p {
+    font-size: 11px;
+  }
+}
+
+.slide-order {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.slide-order button:disabled,
+.slide-actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .desktop-preview {
+    aspect-ratio: 16 / 9;
+  }
+
+  .desktop-preview .preview-overlay h3 {
+    font-size: 14px;
+  }
+
+  .desktop-preview .preview-overlay p {
+    font-size: 10px;
+  }
+}

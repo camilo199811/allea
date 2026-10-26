@@ -1,0 +1,113 @@
+
+<section class="settings-panel">
+
+  <div class="settings-heading">
+    <span class="eyebrow">
+      ALLÉA · CONFIGURACIÓN GENERAL
+    </span>
+
+    <h3>Información de contacto</h3>
+
+    <p>
+      Administra los canales oficiales de comunicación
+      de ALLÉA desde un solo lugar.
+    </p>
+  </div>
+
+  @if (loading()) {
+    <p class="loading-message">
+      Cargando configuración...
+    </p>
+  } @else {
+
+    <form
+      class="settings-form"
+      (ngSubmit)="save()">
+
+      <div class="settings-group">
+
+        <h4>WhatsApp de pedidos</h4>
+
+        <p>
+          Número al que los clientes enviarán sus
+          solicitudes de compra.
+        </p>
+
+        <label for="whatsapp">
+          Número de WhatsApp *
+        </label>
+
+        <input
+          id="whatsapp"
+          type="tel"
+          name="whatsapp"
+          placeholder="573150543250"
+          required
+          [ngModel]="whatsappNumber()"
+          (ngModelChange)="whatsappNumber.set($event)">
+
+        <small>
+          Incluye el indicativo de Colombia (57).
+          Ejemplo: 573150543250
+        </small>
+
+      </div>
+
+      <div class="settings-group">
+
+        <h4>Instagram oficial</h4>
+
+        <p>
+          Este enlace aparecerá en el pie de página
+          de la tienda.
+        </p>
+
+        <label for="instagram">
+          Enlace de Instagram *
+        </label>
+
+        <input
+          id="instagram"
+          type="url"
+          name="instagram"
+          required
+          placeholder="https://www.instagram.com/allea_sport2/"
+          [ngModel]="instagramUrl()"
+          (ngModelChange)="instagramUrl.set($event)">
+
+      </div>
+
+      @if (error()) {
+        <p class="settings-error" role="alert">
+          {{ error() }}
+        </p>
+      }
+
+      @if (success()) {
+        <p class="settings-success" role="status">
+          {{ success() }}
+        </p>
+      }
+
+      <div class="settings-actions">
+
+        <button
+          type="submit"
+          class="save-settings-btn"
+          [disabled]="saving()">
+
+          {{
+            saving()
+              ? 'Guardando cambios...'
+              : 'Guardar configuración'
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  }
+
+</section>

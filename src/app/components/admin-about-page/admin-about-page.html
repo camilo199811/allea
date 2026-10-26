@@ -1,0 +1,190 @@
+
+<section class="about-editor">
+
+  <div class="editor-heading">
+    <span class="eyebrow">ALLÉA · CONTENIDO WEB</span>
+    <h3>Editar página Nosotras</h3>
+    <p>
+      Personaliza las fotografías y los textos
+      de la historia de nuestra marca.
+    </p>
+  </div>
+
+  @if (loading()) {
+    <p class="editor-message">Cargando contenido...</p>
+  } @else if (draft) {
+
+    <nav class="editor-tabs" aria-label="Secciones de Nosotras">
+      @for (section of sections; track $index) {
+        <button
+          type="button"
+          [class.active]="activeSection() === $index"
+          (click)="activeSection.set($index)">
+          {{ section.title }}
+        </button>
+      }
+    </nav>
+
+    @for (section of sections; track $index) {
+
+      @if (activeSection() === $index) {
+
+        <div class="editor-body">
+
+          <div class="section-heading">
+            <span>SECCIÓN 0{{ $index + 1 }}</span>
+            <h4>{{ section.title }}</h4>
+            <p>{{ section.description }}</p>
+          </div>
+
+          <div class="fields-grid">
+
+            @for (field of section.fields; track field.key) {
+
+              <div class="editor-field">
+
+                <label [for]="field.key">
+                  {{ field.label }}
+                </label>
+
+                @if (field.multiline) {
+                  <textarea
+                    [id]="field.key"
+                    rows="5"
+                    [ngModel]="getText(field.key)"
+                    (ngModelChange)="setText(field.key, $event)">
+                  </textarea>
+                } @else {
+                  <input
+                    [id]="field.key"
+                    type="text"
+                    [ngModel]="getText(field.key)"
+                    (ngModelChange)="setText(field.key, $event)">
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+          <div class="images-heading">
+            <h4>Fotografías de la sección</h4>
+            <p>
+              Puedes reemplazarlas por fotografías oficiales
+              de ALLÉA.
+            </p>
+          </div>
+
+          <div class="images-grid">
+
+            @for (image of section.images; track image.key) {
+
+              <div class="image-editor">
+
+                <label>{{ image.label }}</label>
+
+                <div class="image-preview">
+
+                  @if (imageUrl(image.key)) {
+                    <img
+                      [src]="imageUrl(image.key)"
+                      [alt]="image.label">
+                  } @else {
+                    <div class="empty-image">
+                      <span>Sin fotografía</span>
+                    </div>
+                  }
+
+                </div>
+
+                <div class="image-actions">
+
+                  <label class="upload-button">
+                    {{ imageUrl(image.key)
+                        ? 'Reemplazar fotografía'
+                        : 'Subir fotografía' }}
+
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      [disabled]="saving()"
+                      (change)="onImageSelected($event, image.key)">
+                  </label>
+
+                  @if (imageUrl(image.key)) {
+                    <button
+                      type="button"
+                      class="remove-button"
+                      [disabled]="saving()"
+                      (click)="removeImage(image.key)">
+                      Quitar
+                    </button>
+                  }
+
+                </div>
+
+                <small>JPG, PNG o WebP · Máximo 5 MB</small>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+    }
+
+    @if (error()) {
+      <p class="editor-error" role="alert">
+        {{ error() }}
+      </p>
+    }
+
+    @if (success()) {
+      <p class="editor-success" role="status">
+        {{ success() }}
+      </p>
+    }
+
+    <div class="editor-footer">
+
+      <span>
+        Los cambios se aplicarán al guardar.
+      </span>
+
+      <button
+        type="button"
+        class="save-button"
+        [disabled]="saving()"
+        (click)="save()">
+
+        {{
+          saving()
+            ? 'Guardando cambios...'
+            : 'Guardar cambios'
+        }}
+
+      </button>
+
+    </div>
+
+  } @else {
+
+    <p class="editor-error">
+      {{ error() || 'No se pudo cargar el contenido.' }}
+    </p>
+
+    <button
+      type="button"
+      class="save-button"
+      (click)="load()">
+      Reintentar
+    </button>
+
+  }
+
+</section>

@@ -1,0 +1,329 @@
+
+<app-header></app-header>
+
+@if (loading()) {
+
+  <main class="not-found">
+    <h1>Cargando producto...</h1>
+    <p>Estamos preparando los detalles para ti.</p>
+  </main>
+
+} @else if (error()) {
+
+  <main class="not-found">
+    <h1>No pudimos cargar el producto</h1>
+    <p>{{ error() }}</p>
+
+    <button
+      type="button"
+      (click)="refreshProduct()">
+      Intentar nuevamente
+    </button>
+  </main>
+
+} @else if (product(); as product) {
+
+  <main class="product-detail">
+
+    <div class="breadcrumb">
+      <a routerLink="/">Inicio</a>
+      <span>/</span>
+      <span>{{ product.categorySlug }}</span>
+      <span>/</span>
+      <strong>{{ product.name }}</strong>
+    </div>
+
+    <div class="detail-layout">
+
+      <!-- GALERÍA -->
+
+      <div class="detail-gallery">
+
+        <div class="main-image">
+
+          @if (currentImage(); as image) {
+
+            <img
+              [src]="image.url"
+              [alt]="image.alt">
+
+          } @else {
+
+            <div class="image-placeholder">
+              Sin imagen disponible
+            </div>
+
+          }
+
+          @if (images().length > 1) {
+
+            <button
+              type="button"
+              class="gallery-nav previous"
+              aria-label="Imagen anterior"
+              (click)="previousImage()">
+              ‹
+            </button>
+
+            <button
+              type="button"
+              class="gallery-nav next"
+              aria-label="Imagen siguiente"
+              (click)="nextImage()">
+              ›
+            </button>
+
+          }
+
+        </div>
+
+        @if (images().length > 1) {
+
+          <div class="thumbnails">
+
+            @for (
+              image of images();
+              track image.id;
+              let i = $index
+            ) {
+
+              <button
+                type="button"
+                [class.active]="selectedImageIndex() === i"
+                [attr.aria-label]="'Ver imagen ' + (i + 1)"
+                (click)="selectImage(i)">
+
+                <img
+                  [src]="image.url"
+                  [alt]="image.alt">
+
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+      <!-- INFORMACIÓN -->
+
+      <div class="detail-info">
+
+        <span class="brand-label">
+          ALLÉA / ACTIVEWEAR
+        </span>
+
+        <h1>{{ product.name }}</h1>
+
+        <div class="price">
+          {{
+            product.price |
+            currency:'COP':'symbol-narrow':'1.0-0'
+          }}
+        </div>
+
+        <p class="description">
+          {{ product.description }}
+        </p>
+
+        <div class="divider"></div>
+
+        <!-- VARIANTES -->
+
+        <div class="option-section">
+
+          <h3>SELECCIONA TU OPCIÓN</h3>
+
+          <div class="variant-list">
+
+            @for (
+              variant of variants();
+              track variant.id
+            ) {
+
+              <button
+                type="button"
+                class="variant-btn"
+                [class.active]="selectedVariant()?.id === variant.id"
+                [class.inactive]="!variant.available"
+                [attr.aria-pressed]="selectedVariant()?.id === variant.id"
+                (click)="selectVariant(variant)">
+
+                @if (variant.color) {
+
+                  <span
+                    class="color-circle"
+                    [style.background]="variant.colorHex">
+                  </span>
+
+                }
+
+                <span>
+                  {{
+                    variant.color ||
+                    variant.flavor ||
+                    variant.presentation ||
+                    'Opción'
+                  }}
+
+                  @if (variant.size) {
+                    · {{ variant.size }}
+                  }
+
+                  @if (!variant.available) {
+                    · Agotado
+                  }
+                </span>
+
+              </button>
+
+            } @empty {
+
+              <p>
+                Este producto aún no tiene
+                variantes registradas.
+              </p>
+
+            }
+
+          </div>
+
+        </div>
+
+        <!-- DETALLES SELECCIONADOS -->
+
+        @if (selectedVariant(); as selected) {
+
+          <div class="selected-details">
+
+            @if (selected.color) {
+              <p>
+                <strong>Color:</strong>
+                {{ selected.color }}
+              </p>
+            }
+
+            @if (selected.size) {
+              <p>
+                <strong>Talla:</strong>
+                {{ selected.size }}
+              </p>
+            }
+
+            @if (selected.flavor) {
+              <p>
+                <strong>Sabor:</strong>
+                {{ selected.flavor }}
+              </p>
+            }
+
+            @if (selected.presentation) {
+              <p>
+                <strong>Presentación:</strong>
+                {{ selected.presentation }}
+              </p>
+            }
+
+            <p>
+              <strong>Disponibilidad:</strong>
+              {{
+                selected.available
+                  ? 'Disponible'
+                  : 'Agotado'
+              }}
+            </p>
+
+          </div>
+
+        }
+
+        <!-- CANTIDAD -->
+
+        <div class="quantity-section">
+
+          <h3>CANTIDAD</h3>
+
+          <div class="quantity-control">
+
+            <button
+              type="button"
+              aria-label="Disminuir cantidad"
+              [disabled]="quantity() <= 1"
+              (click)="decreaseQuantity()">
+              −
+            </button>
+
+            <span>{{ quantity() }}</span>
+
+            <button
+              type="button"
+              aria-label="Aumentar cantidad"
+              [disabled]="quantity() >= remainingStock()"
+              (click)="increaseQuantity()">
+              +
+            </button>
+
+          </div>
+
+          @if (selectedVariant()?.available) {
+
+            <p class="purchase-note">
+              {{
+                remainingStock() > 0
+                  ? remainingStock() + ' unidades disponibles para agregar'
+                  : 'Ya agregaste al carrito todas las unidades disponibles'
+              }}
+            </p>
+
+          }
+
+        </div>
+
+        <!-- AÑADIR AL CARRITO -->
+
+        <button
+          type="button"
+          class="add-to-cart"
+          [disabled]="!canAddToCart()"
+          (click)="addToCart()">
+
+          {{
+            canAddToCart()
+              ? 'AÑADIR AL CARRITO'
+              : 'NO DISPONIBLE'
+          }}
+
+        </button>
+
+        <p class="purchase-note">
+          Compra con asesoría personalizada por WhatsApp.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+} @else {
+
+  <main class="not-found">
+
+    <h1>Producto no encontrado</h1>
+
+    <p>
+      Este producto no está disponible
+      en nuestro catálogo.
+    </p>
+
+    <a routerLink="/">
+      Volver al catálogo
+    </a>
+
+  </main>
+
+}
+
+<app-footer></app-footer>

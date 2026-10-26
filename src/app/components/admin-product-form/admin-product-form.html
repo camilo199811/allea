@@ -1,0 +1,160 @@
+
+<div class="product-form">
+
+  <div class="form-header">
+    <div>
+      <span class="eyebrow">ALLÉA · ADMIN</span>
+
+      <h3>
+        {{ product() ? 'Editar producto' : 'Agregar producto' }}
+      </h3>
+
+      <p>
+        {{
+          product()
+            ? 'Actualiza la información de esta referencia.'
+            : 'Registra una nueva referencia en tu catálogo.'
+        }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="close-btn"
+      (click)="cancelled.emit()">
+      ✕
+    </button>
+  </div>
+
+  <form
+    #productForm="ngForm"
+    (ngSubmit)="saveProduct()"
+  >
+
+    <div class="field">
+      <label for="name">Nombre del producto *</label>
+
+      <input
+        id="name"
+        name="name"
+        type="text"
+        [(ngModel)]="form.name"
+        (ngModelChange)="generateSlug()"
+        required
+      />
+    </div>
+
+    <div class="field">
+      <label for="slug">Identificador *</label>
+
+      <input
+        id="slug"
+        name="slug"
+        type="text"
+        [(ngModel)]="form.slug"
+        [readonly]="!!product()"
+        required
+      />
+    </div>
+
+    <div class="field">
+      <label for="category">Categoría *</label>
+
+      <select
+        id="category"
+        name="category"
+        [(ngModel)]="form.category_id"
+        required
+      >
+        <option value="" disabled>
+          Selecciona una categoría
+        </option>
+
+        @for (category of categories(); track category.id) {
+          <option [value]="category.id">
+            {{ category.name }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="description">Descripción</label>
+
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="form.description"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label for="price">Precio de venta (COP) *</label>
+
+      <input
+        id="price"
+        name="price"
+        type="number"
+        [(ngModel)]="form.price"
+        min="0"
+        step="100"
+        required
+      />
+    </div>
+
+    <div class="checkbox-field">
+      <label>
+        <input
+          type="checkbox"
+          name="active"
+          [(ngModel)]="form.is_active"
+        />
+        Producto activo
+      </label>
+    </div>
+
+    <div class="checkbox-field">
+      <label>
+        <input
+          type="checkbox"
+          name="featured"
+          [(ngModel)]="form.is_featured"
+        />
+        Producto destacado
+      </label>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="form-error" role="alert">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancelled.emit()">
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="save-btn"
+        [disabled]="loading() || productForm.invalid"
+      >
+        {{
+          loading()
+            ? 'Guardando...'
+            : product()
+              ? 'Guardar cambios'
+              : 'Guardar producto'
+        }}
+      </button>
+
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,422 @@
+
+@if (open()) {
+
+  <div
+    class="cart-backdrop"
+    (click)="close()">
+  </div>
+
+  <aside
+    class="cart-panel"
+    aria-label="Carrito de compras">
+
+    <!-- ENCABEZADO -->
+
+    <div class="cart-header">
+
+      <h2>
+        @if (checkoutStep() === 'cart') {
+          MI CARRITO ({{ totalItems() }})
+        } @else {
+          DATOS DE ENVÍO
+        }
+      </h2>
+
+      <button
+        type="button"
+        aria-label="Cerrar carrito"
+        (click)="close()">
+        ✕
+      </button>
+
+    </div>
+
+    @if (checkoutStep() === 'cart') {
+
+      <!-- PASO 1: CARRITO -->
+
+      <div class="cart-items">
+
+        @for (
+          item of items();
+          track item.productId + '-' + item.variantId
+        ) {
+
+          <div class="cart-item">
+
+            @if (item.imageUrl) {
+              <img
+                [src]="item.imageUrl"
+                [alt]="item.name">
+            }
+
+            <div class="cart-item-info">
+
+              <h3>{{ item.name }}</h3>
+
+              @if (item.color) {
+                <p>Color: {{ item.color }}</p>
+              }
+
+              @if (item.size) {
+                <p>Talla: {{ item.size }}</p>
+              }
+
+              @if (item.flavor) {
+                <p>Sabor: {{ item.flavor }}</p>
+              }
+
+              @if (item.presentation) {
+                <p>
+                  Presentación:
+                  {{ item.presentation }}
+                </p>
+              }
+
+              <strong>
+                {{
+                  item.price |
+                  currency:'COP':'symbol-narrow':'1.0-0'
+                }}
+              </strong>
+
+              <div class="quantity">
+
+                <button
+                  type="button"
+                  (click)="decreaseQuantity(
+                    item.productId,
+                    item.variantId
+                  )">
+                  −
+                </button>
+
+                <span>{{ item.quantity }}</span>
+
+                <button
+                  type="button"
+                  (click)="increaseQuantity(
+                    item.productId,
+                    item.variantId
+                  )">
+                  +
+                </button>
+
+              </div>
+
+              <!-- AVISO DE STOCK -->
+
+              @if (
+                stockWarningVariantId() === item.variantId
+              ) {
+
+                <div class="stock-warning" role="status">
+
+                  <span class="stock-warning-icon">
+                    ⓘ
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      Límite de inventario alcanzado
+                    </strong>
+
+                    <p>
+                      @if (
+                        getStock(
+                          item.productId,
+                          item.variantId
+                        ) > 0
+                      ) {
+                        Solo tenemos
+                        {{
+                          getStock(
+                            item.productId,
+                            item.variantId
+                          )
+                        }}
+                        unidades disponibles de esta referencia.
+                      } @else {
+                        Esta referencia está agotada.
+                      }
+
+                      Si necesitas más unidades,
+                      escríbenos por WhatsApp.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              }
+
+              <button
+                type="button"
+                class="remove"
+                (click)="removeItem(
+                  item.productId,
+                  item.variantId
+                )">
+                Eliminar
+              </button>
+
+            </div>
+
+          </div>
+
+        } @empty {
+
+          <p class="empty-cart">
+            Tu carrito está vacío.
+          </p>
+
+        }
+
+      </div>
+
+      <!-- PIE DEL CARRITO -->
+
+      <div class="cart-footer">
+
+        <div class="total">
+          <span>Subtotal de productos</span>
+
+          <strong>
+            {{
+              totalPrice() |
+              currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+        </div>
+
+        <div class="shipping-notice">
+          <strong>Envíos a toda Colombia</strong>
+
+          <p>
+            El valor de los productos no incluye
+            el costo del envío. Se cotizará
+            según la ciudad de destino.
+          </p>
+
+          <p>
+            El pago contraentrega está disponible
+            únicamente en el Área Metropolitana
+            de Bucaramanga, previa confirmación
+            de cobertura.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="whatsapp-btn"
+          [disabled]="!totalItems()"
+          (click)="continueToShipping()">
+
+          CONTINUAR CON MI PEDIDO
+
+        </button>
+
+      </div>
+
+    } @else {
+
+      <!-- PASO 2: DATOS DE ENVÍO -->
+
+      <div class="shipping-form">
+
+        <p class="shipping-intro">
+          Completa tus datos para que podamos
+          cotizar el envío y confirmar tu pedido.
+        </p>
+
+        <label for="customer-name">
+          Nombre completo *
+        </label>
+
+        <input
+          id="customer-name"
+          type="text"
+          placeholder="Tu nombre completo"
+          autocomplete="name"
+          [ngModel]="customerName()"
+          (ngModelChange)="customerName.set($event)">
+
+        
+<label for="customer-phone">
+  Número de celular *
+</label>
+
+<input
+  id="customer-phone"
+  type="tel"
+  inputmode="numeric"
+  placeholder="Ej. 3001234567"
+  autocomplete="tel"
+  maxlength="10"
+  [ngModel]="customerPhone()"
+  (ngModelChange)="customerPhone.set($event)">
+
+
+        <label for="department">
+          Departamento *
+        </label>
+
+        <input
+          id="department"
+          type="text"
+          placeholder="Ej. Santander"
+          autocomplete="address-level1"
+          [ngModel]="department()"
+          (ngModelChange)="department.set($event)">
+
+        <label for="city">
+          Ciudad o municipio *
+        </label>
+
+        <input
+          id="city"
+          type="text"
+          placeholder="Ej. Bucaramanga"
+          autocomplete="address-level2"
+          [ngModel]="city()"
+          (ngModelChange)="city.set($event)">
+
+        <label for="neighborhood">
+          Barrio *
+        </label>
+
+        <input
+          id="neighborhood"
+          type="text"
+          placeholder="Tu barrio"
+          [ngModel]="neighborhood()"
+          (ngModelChange)="neighborhood.set($event)">
+
+        <label for="address">
+          Dirección de entrega *
+        </label>
+
+        <input
+          id="address"
+          type="text"
+          placeholder="Calle, carrera, número, apartamento..."
+          autocomplete="street-address"
+          [ngModel]="address()"
+          (ngModelChange)="address.set($event)">
+
+        <label for="delivery-notes">
+          Indicaciones adicionales
+        </label>
+
+        <textarea
+          id="delivery-notes"
+          rows="3"
+          placeholder="Torre, conjunto, referencias..."
+          [ngModel]="deliveryNotes()"
+          (ngModelChange)="deliveryNotes.set($event)">
+        </textarea>
+
+        <!-- CONDICIONES -->
+
+        <div class="shipping-terms">
+
+          <strong>
+            Información importante
+          </strong>
+
+          <p>
+            Los precios de los productos no incluyen
+            el envío. El costo será confirmado
+            por WhatsApp antes del pago.
+          </p>
+
+          <p>
+            No aceptamos pagos contraentrega
+            fuera del Área Metropolitana de
+            Bucaramanga.
+          </p>
+
+          <label class="terms-checkbox">
+
+            <input
+              type="checkbox"
+              [ngModel]="acceptsShippingTerms()"
+              (ngModelChange)="acceptsShippingTerms.set($event)">
+
+            <span>
+              He leído y acepto las condiciones
+              de envío y pago.
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- PIE DEL FORMULARIO -->
+
+      <div class="cart-footer">
+
+        <div class="total">
+          <span>Subtotal de productos</span>
+
+          <strong>
+            {{
+              totalPrice() |
+              currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+        </div>
+
+        <p class="shipping-pending">
+          Envío: pendiente por cotizar
+        </p>
+
+<!-- AYUDA PARA COMPLETAR EL FORMULARIO -->
+
+@if (!isShippingValid()) {
+
+  <div
+    class="checkout-error"
+    role="status">
+
+    <strong>Para continuar con tu pedido:</strong>
+
+    <p>
+      {{ shippingValidationMessage() }}
+    </p>
+
+  </div>
+
+}
+
+        
+<button
+  type="button"
+  class="whatsapp-btn"
+  [disabled]="!isShippingValid() || !totalItems()"
+  (click)="sendWhatsApp()">
+
+  ENVIAR PEDIDO POR WHATSAPP
+
+</button>
+
+
+        <button
+          type="button"
+          class="back-to-cart"
+          (click)="backToCart()">
+
+          ← Volver al carrito
+
+        </button>
+
+      </div>
+
+    }
+
+  </aside>
+
+}

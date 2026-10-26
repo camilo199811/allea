@@ -1,0 +1,296 @@
+
+:host {
+  display: block;
+}
+
+.about-editor {
+  background: #242321;
+  border: 1px solid #3b3732;
+  border-radius: 10px;
+  padding: 30px;
+  color: #f5f2ed;
+}
+
+.editor-heading {
+  margin-bottom: 28px;
+
+  .eyebrow {
+    color: #b99867;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  h3 {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 12px 0;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 13px;
+  }
+}
+
+.editor-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+
+  button {
+    flex-shrink: 0;
+    border: 1px solid #49443d;
+    background: #1b1b1b;
+    color: #ddd;
+    padding: 12px 17px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+
+    &.active {
+      background: #b99867;
+      color: #151515;
+      border-color: #b99867;
+      font-weight: 700;
+    }
+  }
+}
+
+.editor-body {
+  background: #2c2a28;
+  border: 1px solid #413b34;
+  border-radius: 8px;
+  padding: 25px;
+}
+
+.section-heading {
+  margin-bottom: 28px;
+
+  span {
+    color: #b99867;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  h4 {
+    font-size: 21px;
+    margin: 10px 0;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 12px;
+  }
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.editor-field {
+  min-width: 0;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 9px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    background: #191919;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font: inherit;
+    font-size: 13px;
+
+    &:focus {
+      outline: none;
+      border-color: #b99867;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.6;
+  }
+}
+
+.images-heading {
+  margin: 35px 0 18px;
+
+  h4 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 12px;
+    color: #aaa;
+  }
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 230px), 1fr)
+  );
+  gap: 20px;
+}
+
+.image-editor {
+  min-width: 0;
+
+  > label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  small {
+    display: block;
+    margin-top: 10px;
+    color: #aaa;
+    font-size: 11px;
+  }
+}
+
+.image-preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #191919;
+  border: 1px solid #4b443c;
+  border-radius: 6px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.empty-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 12px;
+}
+
+.image-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.upload-button,
+.remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 13px;
+  border-radius: 5px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.upload-button {
+  background: #b99867;
+  color: #171717;
+  font-weight: 700;
+
+  input {
+    display: none;
+  }
+}
+
+.remove-button {
+  background: transparent;
+  color: #e9b6b6;
+  border: 1px solid #775050;
+}
+
+.editor-error,
+.editor-success {
+  padding: 13px 0;
+  font-size: 13px;
+}
+
+.editor-error {
+  color: #ffaaaa;
+}
+
+.editor-success {
+  color: #d6c09c;
+}
+
+.editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+
+  span {
+    color: #aaa;
+    font-size: 12px;
+  }
+}
+
+.save-button {
+  background: #b99867;
+  color: #171717;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 25px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background: #cba977;
+  }
+}
+
+@media (max-width: 650px) {
+  .about-editor {
+    padding: 16px;
+  }
+
+  .editor-body {
+    padding: 16px;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-button {
+    width: 100%;
+  }
+}

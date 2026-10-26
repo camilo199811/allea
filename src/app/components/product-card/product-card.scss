@@ -1,0 +1,435 @@
+
+.product-card {
+  background: #111;
+  border: 1px solid #292929;
+  border-radius: 9px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.product-image {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #1b1b1b;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
+}
+
+.no-image {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #777;
+  font-size: 12px;
+}
+
+.product-info {
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  p {
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 34px;
+  }
+
+  strong {
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+
+.colors {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid #777;
+
+  &.selected {
+    outline: 1px solid #fff;
+    outline-offset: 3px;
+  }
+}
+
+.size {
+  color: #aaa;
+  font-size: 11px;
+}
+
+.add-cart {
+  margin-top: 5px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  color: white;
+  padding: 11px 5px;
+  font-size: 12px;
+
+  &:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-info {
+    padding: 9px;
+  }
+
+  .product-info h3 {
+    font-size: 12px;
+  }
+
+  .product-info p {
+    font-size: 10px;
+  }
+
+  .add-cart {
+    font-size: 10px;
+  }
+}
+
+.variant-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 5px 0;
+}
+
+.variant-option {
+  background: transparent;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 5px;
+  min-width: 30px;
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.active {
+    border-color: #fff;
+  }
+}
+
+.variant-option .color-dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #777;
+}
+
+.variant-label {
+  font-size: 10px;
+  padding: 0 4px;
+}
+
+.add-cart:not(:disabled) {
+  opacity: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+}
+
+.product-image {
+  position: relative;
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, .55);
+  color: white;
+
+  font-size: 24px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2;
+}
+
+.gallery-arrow.previous {
+  left: 8px;
+}
+
+.gallery-arrow.next {
+  right: 8px;
+}
+
+.gallery-arrow:hover {
+  background: rgba(0, 0, 0, .85);
+}
+
+.gallery-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+  background: rgba(0, 0, 0, .65);
+  color: white;
+
+  padding: 5px 9px;
+  border-radius: 20px;
+
+  font-size: 10px;
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: 7px;
+  padding: 10px;
+  overflow-x: auto;
+
+  button {
+    width: 48px;
+    height: 58px;
+    flex-shrink: 0;
+
+    padding: 0;
+    border: 1px solid #444;
+    border-radius: 4px;
+
+    background: transparent;
+    overflow: hidden;
+    cursor: pointer;
+
+    &.active {
+      border: 2px solid white;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-arrow {
+    width: 27px;
+    height: 27px;
+    font-size: 20px;
+  }
+
+  .gallery-thumbnails button {
+    width: 38px;
+    height: 48px;
+  }
+}
+
+.product-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.product-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ALLÉA · TARJETAS PREMIUM */
+
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+
+  transition:
+    border-color .3s ease,
+    box-shadow .3s ease,
+    transform .3s ease;
+}
+
+.product-card:hover {
+  border-color: var(--border-accent);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .25);
+  transform: translateY(-3px);
+}
+
+.product-image {
+  background: var(--bg-secondary);
+}
+
+.product-info {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.product-info h3,
+.product-link {
+  color: var(--text-primary);
+}
+
+.product-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.product-info p,
+.product-info .size {
+  color: var(--text-secondary);
+}
+
+.product-info strong {
+  color: var(--text-primary);
+}
+
+/* COLORES SELECCIONADOS */
+.variant-option {
+  border-color: var(--border-color);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.variant-option.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.variant-option:hover {
+  border-color: var(--accent);
+}
+
+/* MINIATURAS */
+.gallery-thumbnails button {
+  border-color: var(--border-color);
+}
+
+.gallery-thumbnails button.active {
+  border-color: var(--accent);
+}
+
+/* BOTÓN DE COMPRA */
+.add-cart {
+  background: var(--accent);
+  color: #111111;
+  border: 1px solid var(--accent);
+  font-weight: 700;
+
+  transition:
+    background .25s ease,
+    transform .25s ease;
+}
+
+.add-cart:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.add-cart:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ======================================
+   ALLÉA · ESTADOS DE INVENTARIO
+====================================== */
+
+.product-image {
+  position: relative;
+}
+
+.sold-out-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 5;
+
+  padding: 9px 14px;
+
+  background: rgba(20, 20, 20, 0.92);
+  color: #f5f2ed;
+
+  border: 1px solid rgba(185, 152, 103, 0.65);
+  border-radius: 3px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.variant-option.sold-out-option {
+  position: relative;
+  opacity: 0.45;
+}
+
+.variant-option.sold-out-option::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: #f5f2ed;
+  transform: rotate(-35deg);
+  pointer-events: none;
+}
+
+.stock-message {
+  display: block;
+  margin-top: 8px;
+  color: #c9a77b;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.add-cart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

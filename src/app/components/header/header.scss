@@ -1,0 +1,251 @@
+
+.header {
+  width: 100%;
+  background: #080808;
+  color: #fff;
+  border-bottom: 1px solid #242424;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: auto;
+  height: 82px;
+  padding: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 29px;
+  font-weight: 300;
+  letter-spacing: 7px;
+  color: #fff;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 40px;
+
+  a {
+    font-size: 13px;
+    color: #ddd;
+    transition: color .2s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 0;
+  color: white;
+  padding: 4px;
+  width: 29px;
+  height: 29px;
+  position: relative;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.cart-count {
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  background: #fff;
+  color: #000;
+  border-radius: 50%;
+  min-width: 17px;
+  height: 17px;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+}
+
+.menu-btn {
+  display: none;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  padding: 15px 5%;
+  background: #111;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    background: #1b1b1b;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 12px;
+    outline: none;
+  }
+
+  button {
+    color: white;
+    background: transparent;
+    border: none;
+  }
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 5%;
+  gap: 22px;
+  background: #111;
+
+  a {
+    color: white;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    height: 68px;
+    padding: 0 18px;
+  }
+
+  .logo {
+    font-size: 23px;
+    letter-spacing: 5px;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .header-actions {
+    gap: 12px;
+  }
+}
+
+/* ALLÉA · NUEVA PALETA DEL HEADER */
+
+.header {
+  background: rgba(17, 17, 17, 0.97);
+  border-bottom: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  backdrop-filter: blur(16px);
+}
+
+.logo {
+  color: var(--text-primary);
+  transition: color .25s ease;
+}
+
+.logo:hover {
+  color: var(--accent);
+}
+
+.desktop-nav a,
+.mobile-nav a {
+  color: var(--text-primary);
+  transition: color .25s ease;
+}
+
+.desktop-nav a:hover,
+.mobile-nav a:hover {
+  color: var(--accent);
+}
+
+.icon-btn {
+  color: var(--text-primary);
+  transition: color .25s ease, transform .25s ease;
+}
+
+.icon-btn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.cart-count {
+  background: var(--accent);
+  color: #111111;
+  border: 1px solid var(--bg-primary);
+}
+
+.search-bar,
+.mobile-nav {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.search-bar input {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: var(--accent);
+}
+
+.search-bar button {
+  color: var(--accent);
+}
+
+/* IDENTIDAD VISUAL ALLÉA */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.logo-image {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  color: #f5f2ed;
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 7px;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    gap: 8px;
+  }
+
+  .logo-image {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-text {
+    font-size: 21px;
+    letter-spacing: 4px;
+  }
+}

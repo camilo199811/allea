@@ -1,0 +1,51 @@
+
+.coming-soon {
+  min-height: 250px;
+  padding: 80px 5%;
+  text-align: center;
+  background: #080808;
+
+  h2 {
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: 3px;
+  }
+
+  p {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #aaa;
+  }
+}
+
+/* ALLÉA · CONTINUIDAD VISUAL */
+
+:host {
+  display: block;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+main {
+  background: var(--bg-primary);
+}
+
+.coming-soon {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.coming-soon p {
+  color: var(--text-secondary);
+}
+
+/* FONDO GENERAL ALLÉA */
+
+:host {
+  display: block;
+  background: #242527;
+}
+
+main {
+  background: #242527;
+}

@@ -1,0 +1,513 @@
+
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .7);
+  z-index: 1999;
+}
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(430px, 100%);
+  height: 100dvh;
+  z-index: 2000;
+  background: #111;
+  border-left: 1px solid #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 40px rgba(0,0,0,.4);
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #333;
+
+  h2 {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  button {
+    background: none;
+    color: white;
+    border: 0;
+    font-size: 20px;
+  }
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+
+  img {
+    width: 90px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+}
+
+.cart-item-info {
+  flex: 1;
+
+  h3 {
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+
+  p {
+    font-size: 11px;
+    color: #aaa;
+    margin: 4px 0;
+  }
+
+  strong {
+    display: block;
+    margin: 10px 0;
+  }
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  button {
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    padding: 5px 10px;
+  }
+}
+
+.remove {
+  margin-top: 12px;
+  background: transparent;
+  border: 0;
+  color: #aaa;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
+.cart-footer {
+  padding: 22px;
+  border-top: 1px solid #333;
+
+  p {
+    color: #aaa;
+    font-size: 11px;
+    text-align: center;
+  }
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.whatsapp-btn {
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+  font-weight: 700;
+  font-size: 11px;
+
+  &:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+}
+
+.empty-cart {
+  text-align: center;
+  color: #aaa;
+  margin-top: 50px;
+}
+
+/* ALLÉA · COLORES DEL CARRITO */
+
+:host {
+  color: var(--text-primary);
+}
+
+/* Paneles del carrito */
+.cart-panel,
+.cart-drawer,
+.cart-content {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Cabecera y pie */
+.cart-header,
+.cart-footer {
+  border-color: var(--border-color);
+}
+
+/* Artículos */
+.cart-item {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Precio y totales */
+.cart-total {
+  color: var(--accent);
+}
+
+/* Botón de finalizar por WhatsApp */
+.checkout-btn,
+.whatsapp-btn {
+  background: var(--accent);
+  color: #111111;
+  border-color: var(--accent);
+}
+
+.checkout-btn:hover,
+.whatsapp-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* ==========================================
+   ALLÉA · AVISO DE INVENTARIO
+========================================== */
+
+.stock-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 12px;
+  margin-bottom: 10px;
+  padding: 12px;
+
+  background: #242321;
+  border: 1px solid rgba(185, 152, 103, 0.45);
+  border-radius: 6px;
+
+  color: #f5f2ed;
+}
+
+.stock-warning-icon {
+  flex-shrink: 0;
+  color: #b99867;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.stock-warning strong {
+  display: block;
+  margin-bottom: 5px;
+
+  color: #e8d2af;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stock-warning p {
+  margin: 0;
+
+  color: #e7e4df;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .stock-warning {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .stock-warning strong {
+    font-size: 11px;
+  }
+
+  .stock-warning p {
+    font-size: 10px;
+  }
+}
+
+/* ==========================================
+   ALLÉA · ENVÍOS Y FORMULARIO DE COMPRA
+========================================== */
+
+.shipping-notice,
+.shipping-terms {
+  margin-top: 16px;
+  padding: 14px;
+
+  background: #242321;
+  border: 1px solid rgba(185, 152, 103, 0.35);
+  border-radius: 6px;
+
+  color: #f5f2ed;
+}
+
+.shipping-notice strong,
+.shipping-terms strong {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #e8d2af;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.shipping-notice p,
+.shipping-terms p {
+  margin: 6px 0;
+  color: #e7e4df;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.shipping-form {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 20px;
+}
+
+.shipping-intro {
+  margin: 0 0 12px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.shipping-form > label {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #292929;
+}
+
+.shipping-form > input,
+.shipping-form > textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  background: #fff;
+  color: #1d1d1d;
+
+  font: inherit;
+  font-size: 13px;
+
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.shipping-form > input:focus,
+.shipping-form > textarea:focus {
+  border-color: #b99867;
+}
+
+.shipping-form > textarea {
+  resize: vertical;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+.terms-checkbox input {
+  flex-shrink: 0;
+  margin-top: 3px;
+  accent-color: #b99867;
+}
+
+.terms-checkbox span {
+  color: #f5f2ed;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.shipping-pending {
+  margin: 8px 0;
+  color: #666;
+  font-size: 12px;
+}
+
+.back-to-cart {
+  display: block;
+  width: 100%;
+
+  margin-top: 10px;
+  padding: 12px;
+
+  background: transparent;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  color: #292929;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.back-to-cart:hover {
+  border-color: #b99867;
+  color: #b99867;
+}
+
+@media (max-width: 480px) {
+  .shipping-form {
+    padding: 16px;
+  }
+}
+
+/* ==========================================
+   ALLÉA - CORRECCIONES DEL CARRITO
+========================================== */
+
+/* Separación entre aviso y botón */
+.shipping-notice {
+  margin-top: 18px;
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.cart-footer .shipping-notice + .whatsapp-btn {
+  margin-top: 8px;
+}
+
+/* Formulario oscuro */
+.shipping-form {
+  background: #1c1c1c;
+  color: #f5f2ed;
+  padding: 22px 20px 28px;
+  gap: 10px;
+}
+
+/* Introducción */
+.shipping-intro {
+  color: #c9c4bd;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+/* Etiquetas visibles */
+.shipping-form > label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 3px;
+  color: #f5f2ed;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Campos */
+.shipping-form > input,
+.shipping-form > textarea {
+  background: #292929;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 13px 14px;
+  min-height: 46px;
+  font-size: 13px;
+}
+
+.shipping-form > textarea {
+  min-height: 85px;
+}
+
+.shipping-form > input::placeholder,
+.shipping-form > textarea::placeholder {
+  color: #a9a9a9;
+  opacity: 1;
+}
+
+.shipping-form > input:focus,
+.shipping-form > textarea:focus {
+  border-color: #b99867;
+  outline: none;
+}
+
+/* Condiciones */
+.shipping-terms {
+  margin-top: 22px;
+  margin-bottom: 14px;
+}
+
+.terms-checkbox {
+  margin-top: 16px;
+}
+
+.terms-checkbox span {
+  color: #f5f2ed;
+}
+
+/* Mensajes de validación */
+.field-error {
+  color: #e8ad9f;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.checkout-error {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid rgba(185, 152, 103, 0.5);
+  border-radius: 5px;
+  color: #e8d2af;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* Botones */
+.cart-footer .whatsapp-btn {
+  margin-top: 12px;
+}
+
+.back-to-cart {
+  color: #f5f2ed;
+  border-color: #777;
+}
+
+.back-to-cart:hover {
+  color: #b99867;
+  border-color: #b99867;
+}
+
+@media (max-width: 480px) {
+  .shipping-form {
+    padding: 18px 16px 26px;
+  }
+}

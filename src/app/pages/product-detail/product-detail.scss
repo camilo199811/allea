@@ -1,0 +1,383 @@
+
+.product-detail {
+  min-height: 100vh;
+  background: #080808;
+  color: white;
+  padding: 45px 5% 90px;
+}
+
+.breadcrumb {
+  max-width: 1350px;
+  margin: 0 auto 35px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+  color: #999;
+
+  a {
+    color: #999;
+    text-decoration: none;
+  }
+
+  strong {
+    color: white;
+    font-weight: 500;
+  }
+}
+
+.detail-layout {
+  max-width: 1350px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 65px;
+  align-items: start;
+}
+
+.main-image {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: #191919;
+  border-radius: 10px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.image-placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: #888;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, .6);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.gallery-nav.previous {
+  left: 15px;
+}
+
+.gallery-nav.next {
+  right: 15px;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  overflow-x: auto;
+
+  button {
+    width: 78px;
+    height: 95px;
+    flex-shrink: 0;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+
+    &.active {
+      border: 2px solid white;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.detail-info {
+  padding-top: 15px;
+
+  h1 {
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 15px 0;
+  }
+}
+
+.brand-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #999;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.description {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.divider {
+  height: 1px;
+  background: #333;
+  margin: 30px 0;
+}
+
+.option-section,
+.quantity-section {
+  margin-bottom: 30px;
+
+  h3 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+}
+
+.variant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.variant-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #171717;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 7px;
+  padding: 10px 13px;
+  cursor: pointer;
+  font-size: 12px;
+
+  &.active {
+    border-color: white;
+  }
+}
+
+.color-circle {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid #777;
+}
+
+.selected-details {
+  margin-bottom: 30px;
+
+  p {
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  strong {
+    color: white;
+  }
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #444;
+  width: fit-content;
+  border-radius: 6px;
+
+  button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 12px 17px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  span {
+    min-width: 35px;
+    text-align: center;
+  }
+}
+
+.add-to-cart {
+  width: 100%;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 7px;
+  padding: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  &:hover {
+    background: #ddd;
+  }
+
+  &:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+}
+
+.purchase-note {
+  color: #999;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.not-found {
+  min-height: 70vh;
+  padding: 100px 20px;
+  text-align: center;
+  background: #080808;
+  color: white;
+
+  a {
+    color: white;
+  }
+}
+
+@media (max-width: 850px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .product-detail {
+    padding: 25px 15px 60px;
+  }
+
+  .detail-info {
+    padding-top: 0;
+  }
+}
+
+/* ALLÉA · DETALLE DE PRODUCTO */
+
+.product-detail,
+.not-found {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.breadcrumb,
+.breadcrumb a {
+  color: var(--text-secondary);
+}
+
+.breadcrumb strong {
+  color: var(--accent);
+}
+
+.main-image {
+  background: var(--bg-card);
+}
+
+.thumbnails button {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.thumbnails button.active {
+  border-color: var(--accent);
+}
+
+.brand-label {
+  color: var(--accent);
+}
+
+.detail-info h1,
+.price {
+  color: var(--text-primary);
+}
+
+.description,
+.selected-details p,
+.purchase-note {
+  color: var(--text-secondary);
+}
+
+.divider {
+  background: var(--border-color);
+}
+
+.variant-btn {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.variant-btn:hover,
+.variant-btn.active {
+  border-color: var(--accent);
+}
+
+.selected-details strong {
+  color: var(--text-primary);
+}
+
+.quantity-control {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.quantity-control button {
+  color: var(--accent);
+}
+
+.quantity-control span {
+  color: var(--text-primary);
+}
+
+.add-to-cart {
+  background: var(--accent);
+  color: #111111;
+}
+
+.add-to-cart:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.not-found a {
+  color: var(--accent);
+}
+
+.variant-btn.inactive {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.variant-btn.inactive:hover {
+  opacity: 0.8;
+}
+
+.add-to-cart:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.quantity-control button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

@@ -1,0 +1,230 @@
+
+<app-header></app-header>
+
+<main class="about-page">
+
+  @if (loading()) {
+
+    <section class="about-loading">
+      <p>Cargando nuestra historia...</p>
+    </section>
+
+  } @else if (content(); as about) {
+
+    <!-- 1. PORTADA -->
+    <section class="about-hero">
+
+      <div class="about-hero-content">
+
+        <span class="eyebrow">
+          NOSOTRAS · ALLÉA
+        </span>
+
+        <h1>
+          {{ about.hero_title }}<br>
+          <span>{{ about.hero_highlight }}</span>
+        </h1>
+
+        <p>{{ about.hero_description }}</p>
+
+        
+
+      </div>
+
+      <div
+        class="about-hero-image"
+        [style.background-image]="about.hero_image
+          ? 'url(' + about.hero_image + ')'
+          : 'none'">
+      </div>
+
+    </section>
+
+    <!-- 2. QUIÉNES SOMOS -->
+    <section class="about-story" id="historia">
+
+      <div
+        class="story-image"
+        [style.background-image]="about.story_image
+          ? 'url(' + about.story_image + ')'
+          : 'none'">
+      </div>
+
+      <div class="story-content">
+
+        <span class="eyebrow">
+          QUIÉNES SOMOS
+        </span>
+
+        <h2>
+          {{ about.story_title }}<br>
+          <span>{{ about.story_highlight }}</span>
+        </h2>
+
+        <div class="gold-line"></div>
+
+        <p>{{ about.story_paragraph_one }}</p>
+
+        <p>{{ about.story_paragraph_two }}</p>
+
+      </div>
+
+    </section>
+
+    <!-- 3. NUESTROS PRODUCTOS -->
+    <section class="about-products">
+
+      <div
+        class="products-main-image"
+        [style.background-image]="about.products_image
+          ? 'url(' + about.products_image + ')'
+          : 'none'">
+      </div>
+
+      <div class="products-content">
+
+        <span class="eyebrow">
+          NUESTROS PRODUCTOS
+        </span>
+
+        <h2>
+          {{ about.products_title }}<br>
+          <span>{{ about.products_highlight }}</span>
+        </h2>
+
+        <div class="gold-line"></div>
+
+        <p>{{ about.products_description }}</p>
+
+        <div class="products-features">
+          <span>COMODIDAD</span>
+          <span>VERSATILIDAD</span>
+          <span>ESTILO</span>
+        </div>
+
+      </div>
+
+      <div class="products-details">
+
+        <div class="detail-item">
+
+          <div
+            class="detail-image detail-image-one"
+            [style.background-image]="about.detail_one_image
+              ? 'url(' + about.detail_one_image + ')'
+              : 'none'">
+          </div>
+
+          <h3>{{ about.detail_one_title }}</h3>
+
+          <p>{{ about.detail_one_description }}</p>
+
+        </div>
+
+        <div class="detail-item">
+
+          <div
+            class="detail-image detail-image-two"
+            [style.background-image]="about.detail_two_image
+              ? 'url(' + about.detail_two_image + ')'
+              : 'none'">
+          </div>
+
+          <h3>{{ about.detail_two_title }}</h3>
+
+          <p>{{ about.detail_two_description }}</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 4. BENEFICIOS -->
+    <section class="about-confidence">
+
+      <div class="confidence-content">
+
+        <span class="eyebrow">
+          ¿POR QUÉ USAR ALLÉA?
+        </span>
+
+        <h2>
+          {{ about.confidence_title }}<br>
+          <span>{{ about.confidence_highlight }}</span>
+        </h2>
+
+        <p>{{ about.confidence_description }}</p>
+
+        <div class="confidence-list">
+          <div><span>01</span> {{ about.benefit_one }}</div>
+          <div><span>02</span> {{ about.benefit_two }}</div>
+          <div><span>03</span> {{ about.benefit_three }}</div>
+          <div><span>04</span> {{ about.benefit_four }}</div>
+        </div>
+
+      </div>
+
+      <div
+        class="confidence-image"
+        [style.background-image]="about.confidence_image
+          ? 'url(' + about.confidence_image + ')'
+          : 'none'">
+      </div>
+
+    </section>
+
+    <!-- 5. MISIÓN Y VISIÓN -->
+    <section
+      class="about-purpose"
+      [style.background-image]="about.purpose_image
+        ? 'linear-gradient(rgba(10,10,10,.85), rgba(10,10,10,.85)), url('
+          + about.purpose_image + ')'
+        : 'none'">
+
+      <div class="purpose-column">
+
+        <span class="eyebrow">
+          NUESTRA MISIÓN
+        </span>
+
+        <p>{{ about.mission }}</p>
+
+      </div>
+
+      <div class="purpose-column">
+
+        <span class="eyebrow">
+          NUESTRA VISIÓN
+        </span>
+
+        <p>{{ about.vision }}</p>
+
+      </div>
+
+      <div class="purpose-signature">
+
+        <h2>{{ about.brand_phrase }}</h2>
+
+        <span>ALLÉA</span>
+
+      </div>
+
+    </section>
+
+  } @else {
+
+    <section class="about-loading">
+      <p>
+        {{
+          error() ||
+          'La información de Nosotras no está disponible.'
+        }}
+      </p>
+    </section>
+
+  }
+
+</main>
+
+<app-footer></app-footer>

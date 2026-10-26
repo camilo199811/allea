@@ -1,0 +1,111 @@
+
+<section class="catalog" id="productos">
+
+  <div class="catalog-heading">
+    <h2>NUESTRA COLECCIÓN</h2>
+    <p>DISEÑADA PARA MUJERES QUE INSPIRAN</p>
+  </div>
+
+  <div class="catalog-layout">
+
+    <aside class="filters">
+
+      <h3>FILTROS</h3>
+
+      <div class="filter-group">
+        <h4>Categoría</h4>
+
+        <button
+          type="button"
+          [class.active]="selectedCategory() === null"
+          (click)="selectCategory(null)">
+          Todas
+        </button>
+
+        @for (category of categories(); track category.id) {
+          <button
+            type="button"
+            [class.active]="selectedCategory() === category.slug"
+            (click)="selectCategory(category.slug)">
+            {{ category.name }}
+          </button>
+        }
+      </div>
+
+      <div class="filter-group">
+        <h4>Talla</h4>
+
+        <div class="filter-options">
+          @for (size of sizes(); track size) {
+            <button
+              type="button"
+              [class.active]="selectedSize() === size"
+              (click)="selectSize(
+                selectedSize() === size ? null : size
+              )">
+              {{ size }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4>Color</h4>
+
+        <div class="filter-options">
+          @for (color of colors(); track color) {
+            <button
+              type="button"
+              [class.active]="selectedColor() === color"
+              (click)="selectColor(
+                selectedColor() === color ? null : color
+              )">
+              {{ color }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <button class="clear-filters" (click)="clearFilters()">
+        ↻ Limpiar filtros
+      </button>
+
+    </aside>
+
+    <div class="catalog-content">
+
+      <div class="catalog-toolbar">
+        <input
+          type="search"
+          placeholder="Buscar producto..."
+          aria-label="Buscar productos"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)">
+
+        <span>{{ filteredProducts().length }} productos</span>
+      </div>
+
+      <div class="products-grid">
+
+        @for (product of filteredProducts(); track product.id) {
+          <app-product-card
+            [product]="product"
+            [variant]="getDisplayVariant(product)">
+          </app-product-card>
+        } @empty {
+          <div class="empty-state">
+            <h3>No encontramos productos</h3>
+            <p>Prueba con otros filtros.</p>
+            <button (click)="clearFilters()">
+              Limpiar filtros
+            </button>
+          </div>
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

@@ -1,0 +1,517 @@
+
+<div class="admin-layout">
+
+  <!-- MENÚ LATERAL -->
+  <aside class="admin-sidebar">
+
+    <div class="admin-brand">
+      <h1>ALLÉA</h1>
+      <span>ADMINISTRACIÓN</span>
+    </div>
+
+    <nav class="admin-menu">
+
+      <button
+        type="button"
+        [class.active]="section() === 'dashboard'"
+        (click)="changeSection('dashboard')">
+        ◫ Panel de control
+      </button>
+
+      <button
+        type="button"
+        [class.active]="section() === 'products'"
+        (click)="changeSection('products')">
+        ◇ Productos
+      </button>
+
+      <button
+        type="button"
+        [class.active]="section() === 'categories'"
+        (click)="changeSection('categories')">
+        ▦ Categorías
+      </button>
+
+      <button
+        type="button"
+        [class.active]="section() === 'slider'"
+        (click)="changeSection('slider')">
+        ▣ Slider principal
+      </button>
+
+      <button
+        type="button"
+        [class.active]="section() === 'settings'"
+        (click)="changeSection('settings')">
+        ⚙ Configuración
+      </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <a routerLink="/">
+        ← Ver tienda
+      </a>
+
+      <button
+        type="button"
+        class="logout-button"
+        (click)="cerrarSesion()">
+        ⏻ Cerrar sesión
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="admin-main">
+
+    <header class="admin-header">
+
+      <div>
+        <span class="eyebrow">
+          ALLÉA / PANEL ADMINISTRATIVO
+        </span>
+
+        <h2>{{ getSectionTitle() }}</h2>
+      </div>
+
+      <a routerLink="/" class="view-store">
+        Ver tienda ↗
+      </a>
+
+    </header>
+
+    <!-- DASHBOARD -->
+    @if (section() === 'dashboard') {
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <span>Productos registrados</span>
+          <strong>{{ totalProducts() }}</strong>
+          <p>Productos en Base de datos</p>
+        </div>
+
+        <div class="stat-card">
+          <span>Productos activos</span>
+          <strong>{{ activeProducts() }}</strong>
+          <p>Referencias publicadas</p>
+        </div>
+
+        <div class="stat-card">
+          <span>Categorías</span>
+          <strong>{{ totalCategories() }}</strong>
+          <p>Secciones del catálogo</p>
+        </div>
+
+        <div class="stat-card">
+          <span>Variantes</span>
+          <strong>{{ totalVariants() }}</strong>
+          <p>Colores y presentaciones</p>
+        </div>
+
+      </div>
+
+      <section class="admin-card">
+
+        <div class="section-heading">
+
+          <h3>Productos recientes</h3>
+
+          <button
+            type="button"
+            (click)="changeSection('products')">
+            Ver todos →
+          </button>
+
+        </div>
+
+        <div class="table-wrapper">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (
+                product of adminProducts().slice(0, 5);
+                track product.id
+              ) {
+                <tr>
+                  <td>{{ product.name }}</td>
+
+                  <td>
+                    ${{ product.price.toLocaleString('es-CO') }}
+                  </td>
+
+                  <td>
+                    <span
+                      class="status"
+                      [class.inactive]="!product.is_active">
+                      {{
+                        product.is_active
+                          ? 'Activo'
+                          : 'Inactivo'
+                      }}
+                    </span>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="3">
+                    Todavía no hay productos registrados.
+                  </td>
+                </tr>
+              }
+
+            </tbody>
+          </table>
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- PRODUCTOS -->
+    @if (section() === 'products') {
+@if (showProductForm()) {
+
+  <app-admin-product-form
+    [product]="editingProduct()"
+    (saved)="onProductSaved()"
+    (cancelled)="closeProductForm()">
+  </app-admin-product-form>
+
+} @else if (variantsProduct(); as selectedProduct) {
+
+  <app-admin-product-variants
+    [productId]="selectedProduct.id"
+    [productName]="selectedProduct.name"
+    [isSupplement]="isSupplementProduct(selectedProduct)"
+    (closed)="closeProductVariants()">
+  </app-admin-product-variants>
+
+}@else {
+
+        <section class="admin-card">
+
+          <div class="section-heading">
+
+            <div>
+              <h3>Inventario de productos</h3>
+              <p>
+                Administra las referencias de ALLÉA
+                desde Supabase.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              class="add-product-btn"
+              (click)="openProductForm()">
+              + Agregar producto
+            </button>
+
+          </div>
+
+          @if (productsError()) {
+            <p class="admin-error" role="alert">
+              {{ productsError() }}
+            </p>
+          }
+
+          @if (loadingProducts()) {
+            <p class="admin-loading">
+              Cargando productos...
+            </p>
+          } @else {
+
+            
+<div class="table-wrapper">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      @for (product of adminProducts(); track product.id) {
+
+        <tr>
+          <td>
+            <strong>{{ product.name }}</strong>
+          </td>
+
+          <td>
+            ${{ product.price.toLocaleString('es-CO') }}
+          </td>
+
+          <td>
+            <span
+              class="status"
+              [class.inactive]="!product.is_active">
+              {{
+                product.is_active
+                  ? 'Activo'
+                  : 'Inactivo'
+              }}
+            </span>
+          </td>
+
+          <td>
+            <div class="product-actions">
+
+<button
+  type="button"
+  class="variants-product-btn"
+  (click)="openProductVariants(product)">
+  ◈ Variantes
+</button>
+
+              <button
+                type="button"
+                class="edit-product-btn"
+                (click)="editProduct(product)">
+                ✎ Editar
+              </button>
+
+              <button
+                type="button"
+                class="delete-product-btn"
+                [disabled]="deletingProductId() !== null"
+                (click)="deleteProduct(product)">
+                {{
+                  deletingProductId() === product.id
+                    ? 'Eliminando...'
+                    : 'Eliminar'
+                }}
+              </button>
+
+            </div>
+          </td>
+        </tr>
+
+      } @empty {
+
+        <tr>
+          <td colspan="4">
+            Aún no hay productos registrados
+            en Supabase.
+          </td>
+        </tr>
+
+      }
+
+    </tbody>
+  </table>
+
+</div>
+
+@if (deleteError()) {
+  <p class="admin-error" role="alert">
+    {{ deleteError() }}
+  </p>
+}
+
+
+          }
+
+        </section>
+
+      }
+
+    }
+
+    <!-- CATEGORÍAS -->
+    
+<!-- CATEGORÍAS -->
+@if (section() === 'categories') {
+
+  @if (showCategoryForm()) {
+
+    <app-admin-category-form
+      [category]="editingCategory()"
+      (saved)="onCategorySaved()"
+      (cancelled)="closeCategoryForm()">
+    </app-admin-category-form>
+
+  } @else {
+
+    <section class="admin-card">
+
+      <div class="section-heading">
+
+        <div>
+          <h3>Categorías de ALLÉA</h3>
+          <p>
+            Administra las categorías del catálogo.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="add-product-btn"
+          (click)="openCategoryForm()">
+          + Agregar categoría
+        </button>
+
+      </div>
+
+      @if (categoryError()) {
+        <p class="admin-error" role="alert">
+          {{ categoryError() }}
+        </p>
+      }
+
+      
+<div class="categories-grid">
+
+  @for (
+    category of categories();
+    track category.id
+  ) {
+
+    <div class="category-admin-card">
+
+      <!-- IMAGEN CIRCULAR -->
+
+      <div class="category-circle">
+
+        @if (category.imageUrl) {
+
+          <img
+            [src]="category.imageUrl"
+            [alt]="category.name"
+            loading="lazy">
+
+        } @else {
+
+          <span class="category-no-image">
+            Sin imagen
+          </span>
+
+        }
+
+      </div>
+
+      <!-- INFORMACIÓN -->
+
+      <div class="category-admin-info">
+
+        <h4>{{ category.name }}</h4>
+
+        <p class="category-slug">
+          {{ category.slug }}
+        </p>
+
+        <span
+          class="status"
+          [class.inactive]="!category.active">
+
+          {{
+            category.active
+              ? 'Activa'
+              : 'Inactiva'
+          }}
+
+        </span>
+
+        <!-- ACCIONES -->
+
+        <div class="category-actions">
+
+          <button
+            type="button"
+            class="edit-product-btn"
+            (click)="editCategory(category)">
+            ✎ Editar
+          </button>
+
+          <button
+            type="button"
+            class="delete-product-btn"
+            [disabled]="deletingCategoryId() !== null"
+            (click)="deleteCategory(category)">
+
+            {{
+              deletingCategoryId() === category.id
+                ? 'Eliminando...'
+                : 'Eliminar'
+            }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  } @empty {
+
+    <p class="categories-empty">
+      Todavía no hay categorías registradas.
+    </p>
+
+  }
+
+</div>
+
+
+    </section>
+
+  }
+
+}
+
+
+    <!-- SLIDER -->
+    
+<!-- SLIDER PRINCIPAL -->
+@if (section() === 'slider') {
+
+  <app-admin-hero-slides>
+  </app-admin-hero-slides>
+
+}
+
+
+    <!-- CONFIGURACIÓN -->
+    
+<!-- CONFIGURACIÓN -->
+@if (section() === 'settings') {
+
+  <div class="admin-settings-content">
+
+    <!-- CONTACTO Y REDES SOCIALES -->
+    <app-admin-store-settings>
+    </app-admin-store-settings>
+
+    <!-- PÁGINA NOSOTRAS -->
+    <app-admin-about-page>
+    </app-admin-about-page>
+
+  </div>
+
+}
+
+
+  </main>
+
+</div>

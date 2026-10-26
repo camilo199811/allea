@@ -1,0 +1,162 @@
+
+<header class="header">
+  <div class="header-container">
+
+    
+<!-- LOGO ALLÉA -->
+<a routerLink="/" class="logo" (click)="closeMenu()">
+
+  <img
+    src="/images/logotipo.png"
+    alt="Logotipo ALLÉA"
+    class="logo-image">
+
+  <span class="logo-text">ALLÉA</span>
+
+</a>
+
+
+    <!-- NAVEGACIÓN ESCRITORIO -->
+    <nav class="desktop-nav">
+      <a routerLink="/">Inicio</a>
+
+      <a routerLink="/" fragment="productos">Productos</a>
+     
+     
+
+      <a routerLink="/nosotras" >
+        Nosotras
+      </a>
+    </nav>
+
+    <!-- ICONOS DEL HEADER -->
+    <div class="header-actions">
+
+      <!-- BOTÓN BUSCADOR -->
+      <button
+        class="icon-btn"
+        type="button"
+        aria-label="Buscar productos"
+        (click)="toggleSearch()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7">
+
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m16 16 5 5"></path>
+
+        </svg>
+      </button>
+
+      <!-- BOTÓN CARRITO -->
+      
+<!-- BOTÓN CARRITO DE COMPRAS -->
+<button
+  class="icon-btn cart-btn"
+  type="button"
+  aria-label="Abrir carrito de compras"
+  (click)="openCart()">
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.7"
+    stroke-linecap="round"
+    stroke-linejoin="round">
+
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+
+  </svg>
+
+  @if (cartCount() > 0) {
+    <span class="cart-count">
+      {{ cartCount() }}
+    </span>
+  }
+
+</button>
+
+
+      <!-- BOTÓN MENÚ MÓVIL -->
+      <button
+        class="icon-btn menu-btn"
+        type="button"
+        aria-label="Abrir menú"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="toggleMenu()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7">
+
+          <path d="M3 6h18M3 12h18M3 18h18"></path>
+
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- BUSCADOR DESPLEGABLE -->
+  @if (searchOpen()) {
+    <div class="search-bar">
+
+      <input
+        type="search"
+        placeholder="Buscar productos en ALLÉA..."
+        aria-label="Buscar productos">
+
+      <button
+        type="button"
+        (click)="toggleSearch()">
+        Cerrar
+      </button>
+
+    </div>
+  }
+
+  <!-- MENÚ RESPONSIVE -->
+  @if (menuOpen()) {
+    <nav class="mobile-nav">
+
+      <a
+        routerLink="/"
+        (click)="closeMenu()">
+        Inicio
+      </a>
+
+      <a
+        routerLink="/"
+        fragment="productos"
+        (click)="closeMenu()">
+        Productos
+      </a>
+
+      <a
+        routerLink="/nosotras"
+        (click)="closeMenu()">
+        Nosotras
+      </a>
+
+    </nav>
+  }
+
+</header>
+
+<!-- PANEL LATERAL DEL CARRITO -->
+<app-cart
+  [open]="cartOpen()"
+  (closed)="closeCart()">
+</app-cart>
