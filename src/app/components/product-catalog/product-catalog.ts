@@ -83,6 +83,30 @@ export class ProductCatalog {
   });
 
   // ==========================================
+  // PANEL DE FILTROS EN MÓVIL
+  // ==========================================
+
+  mobileFiltersOpen = signal(false);
+
+  activeFiltersCount = computed(() => {
+    let count = 0;
+
+    if (this.selectedCategory()) count++;
+    if (this.selectedSize()) count++;
+    if (this.selectedColor()) count++;
+
+    return count;
+  });
+
+  openMobileFilters(): void {
+    this.mobileFiltersOpen.set(true);
+  }
+
+  closeMobileFilters(): void {
+    this.mobileFiltersOpen.set(false);
+  }
+
+  // ==========================================
   // FILTRAR PRODUCTOS
   // No oculta productos por stock en cero
   // ==========================================

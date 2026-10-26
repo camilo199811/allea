@@ -8,98 +8,199 @@
 
   <div class="catalog-layout">
 
-    <aside class="filters">
+    <!-- FONDO OSCURO DEL PANEL MÓVIL -->
+    @if (mobileFiltersOpen()) {
+      <button
+        type="button"
+        class="filters-backdrop"
+        aria-label="Cerrar filtros"
+        (click)="closeMobileFilters()">
+      </button>
+    }
 
-      <h3>FILTROS</h3>
+    <!-- FILTROS: LATERAL EN PC / PANEL EN CELULAR -->
+    <aside
+      class="filters"
+      [class.mobile-open]="mobileFiltersOpen()">
 
-      <div class="filter-group">
-        <h4>Categoría</h4>
+      <div class="mobile-filters-heading">
+        <div>
+          <span class="filters-eyebrow">ALLÉA</span>
+          <h3>FILTRAR PRODUCTOS</h3>
+        </div>
 
         <button
           type="button"
-          [class.active]="selectedCategory() === null"
-          (click)="selectCategory(null)">
-          Todas
+          class="close-filters"
+          aria-label="Cerrar filtros"
+          (click)="closeMobileFilters()">
+          &times;
         </button>
+      </div>
 
-        @for (category of categories(); track category.id) {
+      <h3 class="desktop-filters-title">FILTROS</h3>
+
+      <div class="filters-scroll">
+
+        <!-- CATEGORÍAS -->
+        <div class="filter-group">
+          <h4>Categoría</h4>
+
           <button
             type="button"
-            [class.active]="selectedCategory() === category.slug"
-            (click)="selectCategory(category.slug)">
-            {{ category.name }}
+            [class.active]="selectedCategory() === null"
+            (click)="selectCategory(null)">
+            Todas
           </button>
-        }
-      </div>
 
-      <div class="filter-group">
-        <h4>Talla</h4>
-
-        <div class="filter-options">
-          @for (size of sizes(); track size) {
+          @for (category of categories(); track category.id) {
             <button
               type="button"
-              [class.active]="selectedSize() === size"
-              (click)="selectSize(
-                selectedSize() === size ? null : size
-              )">
-              {{ size }}
+              [class.active]="selectedCategory() === category.slug"
+              (click)="selectCategory(category.slug)">
+              {{ category.name }}
             </button>
           }
         </div>
-      </div>
 
-      <div class="filter-group">
-        <h4>Color</h4>
+        <!-- TALLAS -->
+        <div class="filter-group">
+          <h4>Talla</h4>
 
-        <div class="filter-options">
-          @for (color of colors(); track color) {
-            <button
-              type="button"
-              [class.active]="selectedColor() === color"
-              (click)="selectColor(
-                selectedColor() === color ? null : color
-              )">
-              {{ color }}
-            </button>
-          }
+          <div class="filter-options">
+            @for (size of sizes(); track size) {
+              <button
+                type="button"
+                [class.active]="selectedSize() === size"
+                (click)="selectSize(
+                  selectedSize() === size ? null : size
+                )">
+                {{ size }}
+              </button>
+            }
+          </div>
         </div>
+
+        <!-- COLORES -->
+        <div class="filter-group">
+          <h4>Color</h4>
+
+          <div class="filter-options">
+            @for (color of colors(); track color) {
+              <button
+                type="button"
+                [class.active]="selectedColor() === color"
+                (click)="selectColor(
+                  selectedColor() === color ? null : color
+                )">
+                {{ color }}
+              </button>
+            }
+          </div>
+        </div>
+
       </div>
 
-      <button class="clear-filters" (click)="clearFilters()">
+      <!-- LIMPIAR FILTROS -->
+      <button
+        type="button"
+        class="clear-filters"
+        (click)="clearFilters()">
         ↻ Limpiar filtros
+      </button>
+
+      <!-- BOTÓN SOLO PARA CELULAR -->
+      <button
+        type="button"
+        class="apply-mobile-filters"
+        (click)="closeMobileFilters()">
+        Ver {{ filteredProducts().length }} productos
       </button>
 
     </aside>
 
+    <!-- CATÁLOGO -->
     <div class="catalog-content">
 
       <div class="catalog-toolbar">
-        <input
-          type="search"
-          placeholder="Buscar producto..."
-          aria-label="Buscar productos"
-          [value]="searchTerm()"
-          (input)="searchTerm.set($any($event.target).value)">
 
-        <span>{{ filteredProducts().length }} productos</span>
+        <div class="catalog-search">
+          <input
+            type="search"
+            placeholder="Buscar producto..."
+            aria-label="Buscar productos"
+            [value]="searchTerm()"
+            (input)="searchTerm.set($any($event.target).value)">
+        </div>
+
+        <!-- ABRIR FILTROS EN CELULAR -->
+        <button
+          type="button"
+          class="mobile-filter-button"
+          [attr.aria-expanded]="mobileFiltersOpen()"
+          aria-label="Abrir filtros"
+          (click)="openMobileFilters()">
+
+          <svg
+            width="19"
+            height="19"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"/>
+            <circle cx="9" cy="7" r="2" fill="currentColor"/>
+            <line x1="4" y1="17" x2="20" y2="17"/>
+            <circle cx="16" cy="17" r="2" fill="currentColor"/>
+          </svg>
+
+          <span>Filtros</span>
+
+          @if (activeFiltersCount() > 0) {
+            <span class="filter-count">
+              {{ activeFiltersCount() }}
+            </span>
+          }
+
+        </button>
+
+        <span class="desktop-product-count">
+          {{ filteredProducts().length }} productos
+        </span>
+
       </div>
 
+      <!-- CONTADOR MÓVIL -->
+      <div class="mobile-product-count">
+        {{ filteredProducts().length }} productos
+      </div>
+
+      <!-- PRODUCTOS -->
       <div class="products-grid">
 
         @for (product of filteredProducts(); track product.id) {
+
           <app-product-card
             [product]="product"
             [variant]="getDisplayVariant(product)">
           </app-product-card>
+
         } @empty {
+
           <div class="empty-state">
             <h3>No encontramos productos</h3>
             <p>Prueba con otros filtros.</p>
-            <button (click)="clearFilters()">
+
+            <button
+              type="button"
+              (click)="clearFilters()">
               Limpiar filtros
             </button>
           </div>
+
         }
 
       </div>

@@ -257,3 +257,317 @@
 
   border-top: 1px solid rgba(185, 152, 103, 0.22);
 }
+
+/* ==========================================
+   ALLÉA · FILTROS RESPONSIVE
+   ========================================== */
+
+/* Ocultar controles móviles en escritorio */
+
+.mobile-filter-button,
+.mobile-product-count,
+.mobile-filters-heading,
+.apply-mobile-filters,
+.filters-backdrop {
+  display: none;
+}
+
+.catalog-search {
+  flex: 1;
+  min-width: 0;
+
+  input {
+    width: min(100%, 550px);
+  }
+}
+
+/* ==========================================
+   CELULAR Y TABLET
+   ========================================== */
+
+@media (max-width: 900px) {
+
+  .catalog-layout {
+    display: block;
+  }
+
+  /* El panel no ocupa espacio en el catálogo */
+  .filters {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0;
+
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    max-height: 85dvh;
+    box-sizing: border-box;
+
+    padding: 24px 22px 25px;
+
+    background: #1d1d1d;
+    color: #f5f2ed;
+
+    border-radius: 22px 22px 0 0;
+    border-top: 1px solid rgba(185, 152, 103, .35);
+
+    z-index: 1100;
+
+    transform: translateY(110%);
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+      transform .3s ease,
+      visibility .3s ease;
+
+    box-shadow: 0 -15px 50px rgba(0, 0, 0, .35);
+  }
+
+  .filters.mobile-open {
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .desktop-filters-title {
+    display: none;
+  }
+
+  /* Encabezado del panel */
+
+  .mobile-filters-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+
+    .filters-eyebrow {
+      display: block;
+      color: #b99867;
+      font-size: 10px;
+      letter-spacing: 3px;
+      margin-bottom: 7px;
+    }
+
+    h3 {
+      width: auto;
+      margin: 0;
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+  }
+
+  .close-filters {
+    background: #303030;
+    border: 1px solid #484848;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+  }
+
+  /* Área desplazable de filtros */
+
+  .filters-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+  }
+
+  .filter-group {
+    margin-bottom: 28px;
+
+    h4 {
+      color: #f5f2ed;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    > button {
+      display: block;
+      color: #aaa;
+      padding: 10px 0;
+      font-size: 13px;
+
+      &.active {
+        color: #b99867;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .filter-options {
+    gap: 9px;
+
+    button {
+      padding: 10px 14px;
+      font-size: 12px;
+
+      &.active {
+        background: #b99867;
+        color: #151515;
+        border-color: #b99867;
+      }
+    }
+  }
+
+  .clear-filters {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    color: #ccc;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .apply-mobile-filters {
+    display: block;
+    width: 100%;
+    padding: 16px;
+
+    background: #b99867;
+    color: #151515;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Fondo oscuro detrás del panel */
+
+  .filters-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, .65);
+    border: 0;
+
+    z-index: 1099;
+    cursor: pointer;
+  }
+
+  /* Buscador y botón de filtros */
+
+  .catalog-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .catalog-search {
+    flex: 1;
+    min-width: 0;
+
+    input {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  .mobile-filter-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    flex-shrink: 0;
+
+    padding: 12px 14px;
+    min-height: 45px;
+
+    border: none;
+    border-radius: 25px;
+
+    background: #b99867;
+    color: #151515;
+
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+    background: #151515;
+    color: #fff;
+
+    font-size: 10px;
+  }
+
+  .desktop-product-count {
+    display: none;
+  }
+
+  .mobile-product-count {
+    display: block;
+    color: #c7c0b7;
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+
+}
+
+/* ==========================================
+   AJUSTES PARA CELULARES PEQUEÑOS
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  .catalog {
+    padding-top: 40px;
+  }
+
+  .catalog-heading {
+    margin-bottom: 25px;
+
+    h2 {
+      font-size: clamp(22px, 6vw, 30px);
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 10px;
+      line-height: 1.6;
+    }
+  }
+
+  .mobile-filter-button {
+    padding: 12px 11px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .filters {
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+}
